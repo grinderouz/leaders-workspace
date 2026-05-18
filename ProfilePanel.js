@@ -1,12 +1,9 @@
-// --- ProfilePanel.js ---
-// Requires theme.js (window.GLWTheme) to be loaded before or alongside this script.
-
 (function () {
     let html2canvasPromise = null;
 
     const VIEW_PROFILE_BG = "#232323";
+    const PROFILE_PANEL_BG = "#232323";
 
-    /** Text colors from the active workspace theme (body / headings); same card bg for all themes. */
     function getThemeProfileColors() {
         const fallback = {
             accent: "#d4af37",
@@ -135,6 +132,29 @@
         document.body.appendChild(btnWrapper);
     }
 
+    function getCreationDate() {
+        let stored = {};
+        try {
+            stored = JSON.parse(localStorage.getItem("profilePanel") || "{}");
+        } catch (e) {}
+        return stored.creationDate || null;
+    }
+
+    function formatCreationDate(dateString) {
+        if (!dateString) return null;
+        let date;
+        if (/^\d{4}-\d{2}-\d{2}/.test(dateString)) {
+            // old format: YYYY-MM-DD HH:mm:ss
+            date = new Date(dateString.replace(" ", "T"));
+        } else if (!isNaN(Date.parse(dateString))) {
+            date = new Date(dateString);
+        } else {
+            return dateString;
+        }
+        if (isNaN(date.getTime())) return dateString;
+        return date.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+    }
+
     function getStoredProfile() {
         let stored = {};
         try {
@@ -146,7 +166,8 @@
             avatarUrl: stored.avatarUrl || "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128",
             role: stored.role || "",
             discord: stored.discord || "",
-            email: stored.email || ""
+            email: stored.email || "",
+            creationDate: stored.creationDate || null
         };
     }
 
@@ -154,6 +175,8 @@
         if (document.getElementById("profile-panel-overlay")) return;
 
         const stored = getStoredProfile();
+        const hasCreationDate = !!stored.creationDate;
+
         const overlay = document.createElement("div");
         overlay.id = "profile-panel-overlay";
         overlay.style.cssText = `
@@ -166,6 +189,8 @@
         const panel = document.createElement("div");
         panel.className = "profile-panel-modal";
         panel.style.cssText = `
+            background: ${PROFILE_PANEL_BG};
+            color: #fff;
             border-radius: 12px;
             padding: 36px 28px 28px 28px;
             min-width: 320px;
@@ -177,6 +202,8 @@
             align-items: stretch;
             position: relative;
         `;
+        panel.style.setProperty("--profile-panel-input-bg", "#2a2a2a");
+        panel.style.setProperty("--profile-panel-input-color", "#fff");
 
         const title = document.createElement("h2");
         title.textContent = "Profile Settings";
@@ -322,6 +349,64 @@
             }
         });
 
+        let creationDate = stored.creationDate || null;
+        let creationDatePanelDiv = null;
+
+        if (creationDate) {
+            creationDatePanelDiv = document.createElement("div");
+            creationDatePanelDiv.className = "profile-panel-creationdate";
+            creationDatePanelDiv.style.cssText = "color:#aaa;font-size:0.97em;margin-bottom:12px;margin-top:-7px;text-align:right;font-style:italic;";
+            creationDatePanelDiv.textContent = "Account Creation Date: " + formatCreationDate(creationDate);
+        } else {
+            const setCreationBtn = document.createElement("button");
+            setCreationBtn.textContent = "Set Creation Date";
+            setCreationBtn.type = "button";
+            setCreationBtn.style.cssText = `
+                background: #5fbc32;
+                color: #fff;
+                border: none;
+                border-radius: 6px;
+                font-size: 1em;
+                padding: 7px 18px;
+                font-weight: bold;
+                margin-bottom: 13px;
+                cursor: pointer;
+                margin-top: -2px;
+                align-self: flex-end;
+            `;
+            setCreationBtn.onclick = function () {
+                if (creationDatePanelDiv || getCreationDate()) {
+                    setCreationBtn.disabled = true;
+                    setCreationBtn.style.display = "none";
+                    return;
+                }
+                const now = new Date();
+                const isoString = now.getFullYear() + '-' +
+                    String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                    String(now.getDate()).padStart(2, '0') + ' ' +
+                    String(now.getHours()).padStart(2, '0') + ':' +
+                    String(now.getMinutes()).padStart(2, '0') + ':' +
+                    String(now.getSeconds()).padStart(2, '0');
+                let current = {};
+                try { current = JSON.parse(localStorage.getItem("profilePanel") || "{}"); } catch(e){}
+                if (!current.creationDate) {
+                    current.creationDate = isoString;
+                    localStorage.setItem("profilePanel", JSON.stringify(current));
+                }
+                setCreationBtn.style.display = "none";
+                creationDatePanelDiv = document.createElement("div");
+                creationDatePanelDiv.className = "profile-panel-creationdate";
+                creationDatePanelDiv.style.cssText = "color:#aaa;font-size:0.97em;margin-bottom:12px;margin-top:-7px;text-align:right;font-style:italic;";
+                creationDatePanelDiv.textContent = "Account Creation Date: " + formatCreationDate(isoString);
+                setCreationBtn.parentNode.insertBefore(creationDatePanelDiv, setCreationBtn.nextSibling);
+            };
+
+            panel.appendChild(setCreationBtn);
+        }
+        if (creationDatePanelDiv) {
+            panel.appendChild(creationDatePanelDiv);
+        }
+
         const btnRow = document.createElement("div");
         btnRow.style.cssText = "display:flex;justify-content:flex-end;gap:10px;";
 
@@ -346,6 +431,8 @@
                     return;
                 }
             }
+            let old = {};
+            try { old = JSON.parse(localStorage.getItem("profilePanel") || "{}"); } catch(e){}
             const data = {
                 nickname: nicknameInput.value.trim(),
                 clanTag: clanTagInput.value.trim(),
@@ -354,6 +441,7 @@
                 discord: discordInput.value.trim(),
                 email: emailInput.value.trim()
             };
+            if (old.creationDate) data.creationDate = old.creationDate;
             localStorage.setItem("profilePanel", JSON.stringify(data));
             closeProfilePanel();
         };
@@ -402,7 +490,6 @@
             overlay?.parentNode?.removeChild(overlay);
             document.removeEventListener("keydown", escListener);
         }
-
     }
 
     function openViewProfilePanel() {
@@ -500,6 +587,14 @@
             roleEl.style.cssText = mutedStyle + "margin-bottom:22px;";
         }
 
+        const creationDateViewDiv = document.createElement("div");
+        if (profile.creationDate) {
+            creationDateViewDiv.className = "profile-view-text";
+            creationDateViewDiv.textContent = "Creation Date: " + formatCreationDate(profile.creationDate);
+            creationDateViewDiv.style.cssText = fieldStyle + "margin-bottom:8px;";
+            panel.appendChild(creationDateViewDiv);
+        }
+
         const shareBtn = document.createElement("button");
         shareBtn.className = "profile-view-share-btn";
         shareBtn.title = "Download image to share!";
@@ -522,6 +617,14 @@
         shareBtn.onclick = function (e) {
             e.preventDefault();
             e.stopPropagation();
+
+            // Find the close button in this panel and change its text content before image download
+            const closeBtn = panel.querySelector("button:not(.profile-view-share-btn)");
+            let originalCloseText = null;
+            if (closeBtn) {
+                originalCloseText = closeBtn.textContent;
+                closeBtn.textContent = "GRINDEROUZ CARD";
+            }
 
             loadHtml2Canvas().then((html2canvas) => {
                 const origBg = panel.style.background;
@@ -546,8 +649,16 @@
                 }).catch(()=>{
                     panel.style.background = origBg;
                     alert("Sorry! Could not generate image.");
+                }).finally(() => {
+                    // Restore original close button text after download action
+                    if (closeBtn && originalCloseText !== null) {
+                        closeBtn.textContent = originalCloseText;
+                    }
                 });
             }).catch(() => {
+                if (closeBtn && originalCloseText !== null) {
+                    closeBtn.textContent = originalCloseText;
+                }
                 alert("Image sharing functionality failed to load. Please try again.");
             });
         };
@@ -568,7 +679,6 @@
         `;
         closeBtn.onclick = closePanel;
 
-        // Insert a CSS style for .view-profile-modal and theming
         injectProfilePanelStyle();
 
         panel.appendChild(shareBtn);
@@ -619,14 +729,26 @@
         document.head.appendChild(style);
     }
 
-    /** Edit panel: themed via themes/*.css. View profile: fixed card bg, text from GLWTheme page colors. */
     function injectProfilePanelStyle() {
         if (document.getElementById("profile-panel-theme-style")) return;
         const style = document.createElement("style");
         style.id = "profile-panel-theme-style";
         style.textContent = `
-            .view-profile-modal {
+            .view-profile-modal,
+            .profile-panel-modal,
+            html:not([data-theme]) #profile-panel-overlay > div,
+            html.theme-default #profile-panel-overlay > div,
+            html.theme-default .profile-panel-modal {
                 background: #232323 !important;
+                color: #fff !important;
+            }
+            html:not([data-theme]) #profile-panel-overlay input,
+            html:not([data-theme]) #profile-panel-overlay select,
+            html.theme-default #profile-panel-overlay input,
+            html.theme-default #profile-panel-overlay select {
+                background: #2a2a2a !important;
+                color: #fff !important;
+                border-color: #bab07c !important;
             }
             .view-profile-modal .profile-view-accent {
                 color: var(--profile-view-accent, #d4af37);

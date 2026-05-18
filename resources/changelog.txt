@@ -1,6 +1,10 @@
+V1.2.2 May 18, 2026
+-----------------------------
+Bug Fixes, Small Changes, Clear All Data, Account Creation Button, & More!
+
 V1.1.1 May 18, 2026
 -----------------------------
-Theme Bug Fixes, Profile Bug Fixes,
+Theme Bug Fixes, Profile Bug Fixes, 
 
 V1.0.0 May 18, 2026
 -----------------------------

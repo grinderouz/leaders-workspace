@@ -37,8 +37,10 @@
             root.classList.remove("theme-" + t.id);
         });
 
+        root.classList.remove("theme-default");
         if (theme.id === "default") {
             root.removeAttribute("data-theme");
+            root.classList.add("theme-default");
         } else {
             root.setAttribute("data-theme", theme.id);
             root.classList.add("theme-" + theme.id);
