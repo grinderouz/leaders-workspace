@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Grinderouz Leaders Workspace - Rules</title>
     <link rel="icon" type="image/png" href="assets/navicon.png">
     <link rel="manifest" href="manifest.json">
@@ -46,16 +46,78 @@
             background: #1a1a1a;
             width: 100%;
         }
+        .banner-header {
+            width: 100%;
+            min-height: 190px;
+            background: url('https://github.com/grinderouz/clan/blob/main/icon-directory/banners/may-2026/web-banner.png?raw=true') center center/cover no-repeat, #191919;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 38px;
+            position: relative;
+        }
+        .banner-header-inner {
+            background: rgba(25, 25, 25, 0.87);
+            padding: 34px 56px 30px 56px;
+            border-radius: 12px;
+            box-shadow: 0 2px 24px #0008;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 94vw;
+        }
+        .banner-header-inner img {
+            width: 62px;
+            height: 62px;
+            margin-bottom: 10px;
+        }
+        .banner-header-inner h1 {
+            font-size: 2.25em;
+            color: #d4af37;
+            margin: 0 0 4px 0;
+            letter-spacing: 2.5px;
+            font-family: 'Segoe UI', sans-serif;
+            text-shadow: 1px 2px 16px #000b;
+        }
+        .banner-header-inner span {
+            font-size: 1.1em;
+            color: #fffbe8cc;
+            margin-top: 6px;
+            letter-spacing: 1px;
+        }
     </style>
     <script src="lock.js"></script>
+    <script src="ProfilePanel.js"></script>
 </head>
 <body>
     <div id="navbar-container"></div>
     <script src="navbar.js"></script>
     <main>
+        <div class="banner-header">
+            <div class="banner-header-inner">
+                <img src="assets/navicon.png" alt="Grinderouz Icon" />
+                <h1>GLW - Leaders Workspace</h1>
+                <span>Rules & Resources for Clan Management</span>
+            </div>
+        </div>
+        <section id="links" style="margin-bottom: 30px;">
+            <div class="card" style="display: flex; flex-direction: column; align-items: center;">
+                <h2 style="margin-bottom: 16px; color: #d4af37;">Visit & Connect</h2>
+                <p>
+                    <a href="https://grinderouz.github.io/clan/" target="_blank" style="color: #d4af37; font-weight: bold; text-decoration: underline; margin-right: 18px;">
+                        🌐 Visit our Home Website
+                    </a>
+                    <a href="https://discord.gg/jEN9NNdA4v" target="_blank" style="color: #7289da; font-weight: bold; text-decoration: underline;">
+                        💬 Join our Discord
+                    </a>
+                </p>
+                <p style="margin-top: 10px;">
+                    Stay updated, chat with the clan, and like or follow us for the latest!
+                </p>
+            </div>
+        </section>
         <section id="rules">
             <h2>Rules & Ranks</h2>
-
             <div class="card">
                 <h3>BOTH ROLES</h3>
                 <strong>Strike Log Rules</strong>
@@ -67,7 +129,6 @@
                     If you go on vacation or will be inactive, post your expected return in the Discord LOA channel. Extended inactivity may result in removal, but a spot will be kept for you. This applies to Elders and Co-leaders only.
                 </p>
             </div>
-
             <div class="card">
                 <h3>ELDER RULES</h3>
                 <p>
@@ -83,7 +144,6 @@
                     Stay active, donate regularly, and participate in wars, clan games, and raids.
                 </p>
             </div>
-
             <div class="card">
                 <h3>CO-LEADER RULES</h3>
                 <p>
@@ -103,7 +163,6 @@
                     When promoting a member to Elder, post their name, tag, and Discord user in the Recruits channel. Failure to do so may result in a warning.
                 </p>
             </div>
-
             <div class="card">
                 <h3>LEADER REQUIREMENTS</h3>
                 <p>

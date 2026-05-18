@@ -16,7 +16,7 @@ const LOCKAPP_HASH = "e301479c1594b2e3044ffae89c2d8f8c127cb3e37fe1a84e612a035fb0
                 position:fixed !important;
                 z-index:99999 !important;
                 inset:0 !important;
-                background:#18140a !important;
+                background:black !important;
                 color:#fff !important;
                 text-align:center !important;
                 display:flex !important;
@@ -26,7 +26,7 @@ const LOCKAPP_HASH = "e301479c1594b2e3044ffae89c2d8f8c127cb3e37fe1a84e612a035fb0
                 font-family:sans-serif !important;
             }
             #lockapp-overlay .lockapp-box {
-                background:#24220e !important;
+                background:#111 !important;
                 box-shadow:0 6px 32px #000c !important;
                 padding:36px 26px !important;
                 border-radius:10px !important;

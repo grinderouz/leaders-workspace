@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grinderouz Leaders Workspace - Settings</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="icon" type="image/png" href="assets/navicon.png">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: #191919;
+            color: #fff;
+            margin: 0;
+            min-height: 100vh;
+            max-width: 100vw;
+            overflow-x: hidden;
+            padding: 0;
+            padding-top: 0 !important;
+        }
+        body::-webkit-scrollbar {
+            width: 14px;
+            background: #191919;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 7px;
+            border: 3px solid #191919;
+        }
+        body::-webkit-scrollbar-thumb:hover {
+            background: #b89a2b;
+        }
+        body::-webkit-scrollbar-track {
+            background: #191919;
+            border-radius: 8px;
+        }
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #d4af37 #191919;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        #navbar-container {
+            all: unset;
+            display: block;
+            width: 100%;
+            position: sticky !important;
+            top: 0;
+            z-index: 1100;
+            background: #1a1a1a;
+        }
+        .container {
+            max-width: 470px;
+            margin: 40px auto 0 auto;
+            background: #232323;
+            border-radius: 13px;
+            box-shadow: 0 4px 32px #000c;
+            padding: 38px 28px 32px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        main {
+            width: 100%;
+        }
+        h1 {
+            color: #d4af37;
+            font-size: 1.35em;
+            margin-bottom: 22px;
+        }
+        .desc {
+            color: #ffe4a4cc;
+            text-align: center;
+            line-height: 1.6;
+            font-size: 1.04em;
+            margin-bottom: 16px;
+        }
+        .actions {
+            margin-top: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+        .settings-btn,
+        label[for="importInput"] {
+            background: rgb(49, 49, 49);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.09em;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 12px 15px;
+            box-shadow: 0 2px 10px #0006;
+            transition: background 0.17s, color 0.17s;
+            text-align: center;
+            margin-bottom: 2px;
+            width: 100%;
+            font-family: inherit;
+        }
+        .settings-btn:hover,
+        label[for="importInput"]:hover {
+            background: #f3f3f1;
+            color: #000000;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .status {
+            margin-top: 18px;
+            color: #ffd700;
+            font-size: 0.97em;
+            min-height: 24px;
+            text-align: center;
+        }
+        .tip {
+            font-size: 0.93em;
+            color: #e9dcab;
+            margin-top: 11px;
+            text-align: center;
+        }
+    </style>
+    <script src="lock.js"></script>
+    <script src="ProfilePanel.js"></script>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="navbar.js"></script>
+    <main>
+        <div class="container">
+            <h1>Export &amp; Import Your GLW Data</h1>
+            <div class="desc">
+                Download all locally saved data (application forms, profile, etc.) as a disguised PNG<br>
+                <span style="color:#bab07c;">The PNG is really your JSON data, to be re-imported here later if needed.</span>
+            </div>
+            <div class="actions">
+                <button class="settings-btn" id="downloadBtn" type="button">📦 Export My Data (.png)</button>
+                <label for="importInput" style="width:100%;display:block;">⬆️ Import Data (.png → localStorage)</label>
+                <input type="file" id="importInput" accept="image/png">
+            </div>
+            <div class="tip">
+                <b>What does this save?</b><br>
+                All <i>localStorage</i> keys for this site are included.<br>
+                <b>What happens on import?</b><br>
+                Replaces any current local data with your backup!
+            </div>
+            <div class="status" id="statusMsg"></div>
+        </div>
+    </main>
+    <script>
+        function jsonToPngDataUrl(json) {
+            const bstr = new TextEncoder().encode(json);
+            const width = 600;
+            const rows = Math.ceil(bstr.length / 3);
+            const height = Math.max(1, rows);
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            const imgData = ctx.createImageData(width, height);
+            for (let i = 0; i < bstr.length; i += 3) {
+                const px = i / 3;
+                imgData.data[px * 4 + 0] = bstr[i] ?? 0;
+                imgData.data[px * 4 + 1] = bstr[i + 1] ?? 0;
+                imgData.data[px * 4 + 2] = bstr[i + 2] ?? 0;
+                imgData.data[px * 4 + 3] = 255;
+            }
+            ctx.putImageData(imgData, 0, 0);
+            return canvas.toDataURL('image/png');
+        }
+
+        function pngDataUrlToJson(file, callback, errorCallback) {
+            const img = new Image();
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    const imgData = ctx.getImageData(0, 0, img.width, img.height);
+                    const bytes = [];
+                    for (let i = 0; i < imgData.data.length; i += 4) {
+                        bytes.push(imgData.data[i]);
+                        bytes.push(imgData.data[i + 1]);
+                        bytes.push(imgData.data[i + 2]);
+                    }
+                    while (bytes.length && bytes[bytes.length - 1] === 0) {
+                        bytes.pop();
+                    }
+                    try {
+                        const json = new TextDecoder().decode(Uint8Array.from(bytes));
+                        callback(json);
+                    } catch (e) {
+                        errorCallback("Failed decoding file");
+                    }
+                };
+                img.onerror = function() {
+                    errorCallback("File could not be read as image.");
+                };
+                img.src = e.target.result;
+            };
+            reader.onerror = function() {
+                errorCallback("Could not read file");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function getAllLocalData() {
+            const out = {};
+            for (let i = 0; i < localStorage.length; ++i) {
+                const k = localStorage.key(i);
+                try {
+                    const v = localStorage.getItem(k);
+                    out[k] = v;
+                } catch (e) {
+                    out[k] = null;
+                }
+            }
+            return out;
+        }
+
+        function restoreAllLocalData(obj) {
+            localStorage.clear();
+            Object.keys(obj).forEach(k => localStorage.setItem(k, obj[k]));
+        }
+
+        const downloadBtn = document.getElementById('downloadBtn');
+        const importInput = document.getElementById('importInput');
+        const statusMsg = document.getElementById('statusMsg');
+
+        downloadBtn.onclick = function() {
+            const allData = getAllLocalData();
+            const json = JSON.stringify(allData, null, 2);
+            const dataUrl = jsonToPngDataUrl(json);
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = 'glw_backup.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            statusMsg.textContent = "✅ Data exported as PNG! Keep it safe.";
+        };
+
+        importInput.onchange = function() {
+            statusMsg.textContent = "Importing...";
+            const file = importInput.files && importInput.files[0];
+            if (!file) {
+                statusMsg.textContent = "No file selected.";
+                return;
+            }
+            pngDataUrlToJson(
+                file,
+                function(json) {
+                    try {
+                        const obj = JSON.parse(json);
+                        if (typeof obj !== "object" || Array.isArray(obj) || !Object.keys(obj).length) {
+                            throw new Error("Invalid backup file format.");
+                        }
+                        restoreAllLocalData(obj);
+                        statusMsg.textContent = "✅ Import successful! Refresh page to see new data.";
+                    } catch (e) {
+                        statusMsg.textContent = "❌ Failed: This file is not a valid GLW backup.";
+                    }
+                },
+                function(msg) {
+                    statusMsg.textContent = "❌ " + msg;
+                }
+            );
+        };
+    </script>
+</body>
+</html>

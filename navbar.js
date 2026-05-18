@@ -1,17 +1,62 @@
 document.addEventListener("DOMContentLoaded", () => {
     const navbarContainer = document.getElementById("navbar-container");
 
+    function getStoredProfile() {
+        let stored = {};
+        try {
+            stored = JSON.parse(localStorage.getItem("profilePanel") || "{}");
+        } catch (e) {}
+        return {
+            nickname: stored.nickname || "",
+            avatarUrl: stored.avatarUrl || "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128"
+        };
+    }
+
     if (navbarContainer) {
+        const { nickname, avatarUrl } = getStoredProfile();
+
+        const userProfileHtml = `
+            <div class="navbar-user-profile" id="navbar-user-profile" style="display: flex; align-items: center; gap: 8px; margin-left: 14px;">
+                <img src="${avatarUrl}" alt="Avatar" class="navbar-user-avatar" 
+                    style="
+                        width: 38px; 
+                        height: 38px; 
+                        border-radius: 50%; 
+                        background: #111; 
+                        object-fit: cover; 
+                        margin: 0 2px 0 0;
+                    "
+                    onerror="this.src='https://ui-avatars.com/api/?name=User&amp;background=2d2d2d&amp;color=d4af37&amp;size=128'"
+                >
+                <span class="navbar-user-nickname" 
+                      style="
+                        color: #d4af37; 
+                        font-size: 1.08em;
+                        font-weight: 600;
+                        letter-spacing: 0.5px;
+                        max-width: 120px;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                      ">
+                    ${nickname ? nickname : "No Nickname"}
+                </span>
+            </div>
+        `;
+
         navbarContainer.innerHTML = `
             <header class="navbar-header">
                 <div class="navbar-top-row">
-                    <a href="index.html">
-                        <img src="assets/navicon.png" alt="navicon" class="navbar-favicon" onerror="this.style.display='none';">
-                    </a>
-                    <a href="index.html" class="navbar-logo-title">
-                        <img src="logo.png" alt="Logo" class="navbar-logo" onerror="this.style.display='none';">
-                        <span class="navbar-title">GLW - Grinderouz Leaders Workspace</span>
-                    </a>
+                    <div style="display: flex; align-items: center; gap: 13px;">
+                        <a href="index.html">
+                            <img src="assets/navicon.png" alt="navicon" class="navbar-favicon" onerror="this.style.display='none';">
+                        </a>
+                        <a href="index.html" class="navbar-logo-title">
+                            <img src="logo.png" alt="Logo" class="navbar-logo" onerror="this.style.display='none';">
+                            <span class="navbar-title">GLW - Grinderouz Leaders Workspace</span>
+                        </a>
+                    </div>
+                    ${userProfileHtml}
                     <button class="hamburger" id="hamburger-menu" aria-label="Toggle navigation">
                         <span></span>
                         <span></span>
@@ -22,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <a href="index.html" class="nav-link">Rules & Ranks</a>
                     <a href="faq.html" class="nav-link">PlayBook FAQ</a>
                     <a href="database.html" class="nav-link">Google Forms</a>
-                    <a href="https://grinderouz.github.io/clan/" class="nav-link">Home Site</a>
+                    <a href="settings.html" class="nav-link">Export Settings</a>
                 </nav>
             </header>
             <style>
@@ -82,6 +127,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     vertical-align: middle;
                     color: #d4af37;
                 }
+                .navbar-user-profile {
+                    min-width: 0;
+                }
                 @media (max-width: 699px) {
                     .navbar-title,
                     .navbar-logo {
@@ -93,6 +141,17 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                     .navbar-favicon {
                         margin-right: 0;
+                    }
+                    .navbar-user-profile {
+                        margin-left: 4px !important;
+                    }
+                    .navbar-user-nickname {
+                        font-size: 0.98em !important;
+                        max-width: 70px !important;
+                    }
+                    .navbar-user-avatar {
+                        width: 28px !important;
+                        height: 28px !important;
                     }
                 }
                 .hamburger {
@@ -152,7 +211,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         align-items: center;
                         justify-content: space-between;
                         padding: 20px 28px 14px 28px;
-                        /* keep sticky and top/z-index on desktop */
                         position: sticky;
                         top: 0;
                         z-index: 1100;
@@ -184,6 +242,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         margin-top: 0;
                         width: auto;
                         gap: 20px;
+                    }
+                    .navbar-user-profile {
+                        margin-left: 20px;
                     }
                 }
             </style>
