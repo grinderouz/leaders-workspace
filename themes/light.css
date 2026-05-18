@@ -204,7 +204,6 @@ html.light-mode .theme-card {
 
 html[data-theme="light"] .theme-card.is-active,
 html.light-mode .theme-card.is-active {
-    color:white;
     border-color: #d4af37 !important;
     box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.35) !important;
 }
@@ -239,8 +238,10 @@ html.light-mode #view-profile-btn-panel {
 
 html[data-theme="light"] .profile-panel-modal,
 html[data-theme="light"] #profile-panel-overlay > div,
+html[data-theme="light"] #view-profile-overlay > div,
 html.light-mode .profile-panel-modal,
-html.light-mode #profile-panel-overlay > div {
+html.light-mode #profile-panel-overlay > div,
+html.light-mode #view-profile-overlay > div {
     background: #ffffff !important;
     color: #1e1e1e !important;
     box-shadow: 0 4px 32px rgba(0, 0, 0, 0.12) !important;
@@ -248,14 +249,20 @@ html.light-mode #profile-panel-overlay > div {
 
 html[data-theme="light"] #profile-panel-overlay input,
 html[data-theme="light"] #profile-panel-overlay select,
+html[data-theme="light"] #view-profile-overlay input,
+html[data-theme="light"] #view-profile-overlay select,
 html.light-mode #profile-panel-overlay input,
-html.light-mode #profile-panel-overlay select {
+html.light-mode #profile-panel-overlay select,
+html.light-mode #view-profile-overlay input,
+html.light-mode #view-profile-overlay select {
     background: #f5f5f3 !important;
     color: #1e1e1e !important;
     border-color: #ccc !important;
 }
 
 html[data-theme="light"] #profile-panel-overlay [style*="color:#fffbe8"],
-html.light-mode #profile-panel-overlay [style*="color:#fffbe8"] {
+html[data-theme="light"] #view-profile-overlay [style*="color:#fffbe8"],
+html.light-mode #profile-panel-overlay [style*="color:#fffbe8"],
+html.light-mode #view-profile-overlay [style*="color:#fffbe8"] {
     color: #4a4a4a !important;
 }
