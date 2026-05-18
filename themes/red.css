@@ -193,8 +193,7 @@ html[data-theme="crimsonred"] #view-profile-btn-panel {
     border-color: #ff4655 !important;
 }
 
-html[data-theme="crimsonred"] #profile-panel-overlay > div,
-html[data-theme="crimsonred"] #view-profile-overlay > div {
+html[data-theme="crimsonred"] #profile-panel-overlay > div {
     background: #1a1218 !important;
     color: #fff5f5 !important;
     box-shadow: 0 8px 40px rgba(255, 70, 85, 0.28) !important;
@@ -202,16 +201,13 @@ html[data-theme="crimsonred"] #view-profile-overlay > div {
 }
 
 html[data-theme="crimsonred"] #profile-panel-overlay input,
-html[data-theme="crimsonred"] #profile-panel-overlay select,
-html[data-theme="crimsonred"] #view-profile-overlay input,
-html[data-theme="crimsonred"] #view-profile-overlay select {
+html[data-theme="crimsonred"] #profile-panel-overlay select {
     background: #2a1820 !important;
     color: #fff5f5 !important;
     border-color: #ff4655 !important;
 }
 
-html[data-theme="crimsonred"] #profile-panel-overlay [style*="color:#d4af37"],
-html[data-theme="crimsonred"] #view-profile-overlay [style*="color:#d4af37"] {
+html[data-theme="crimsonred"] #profile-panel-overlay [style*="color:#d4af37"] {
     color: #ffb020 !important;
 }
 

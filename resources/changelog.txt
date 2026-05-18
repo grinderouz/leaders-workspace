@@ -1,3 +1,7 @@
+V1.1.1 May 18, 2026
+-----------------------------
+Theme Bug Fixes, Profile Bug Fixes,
+
 V1.0.0 May 18, 2026
 -----------------------------
 New Themes, Profile Creation, Export Data, Roles, Bug Fixes. Etc.

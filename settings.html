@@ -132,6 +132,15 @@
             text-align: center;
             width: 100%;
         }
+        .app-version {
+            margin-top: 22px;
+            color: #a9a9b3;
+            font-size: 0.94em;
+            text-align: center;
+            width: 100%;
+            letter-spacing: 0.04em;
+            user-select: text;
+        }
     </style>
     <script src="lock.js"></script>
     <script src="ProfilePanel.js"></script>
@@ -161,6 +170,7 @@
                 Replaces any current local data with your backup!
             </div>
             <div class="status" id="statusMsg"></div>
+            <div class="app-version" id="appVersion">App version: <span id="appVersionValue">v1.1.1</span></div>
         </div>
     </main>
     <script>
@@ -342,6 +352,10 @@
             updateStorageUsage();
         });
 
+        // Optionally use a dynamic version if you have one:
+        // If you want to set the version automatically from a JS variable, uncomment and use:
+        // const APP_VERSION = "v1.0.0";
+        // document.getElementById("appVersionValue").textContent = APP_VERSION;
     </script>
 </body>
 </html>

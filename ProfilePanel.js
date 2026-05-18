@@ -1,5 +1,58 @@
+// --- ProfilePanel.js ---
+// Requires theme.js (window.GLWTheme) to be loaded before or alongside this script.
+
 (function () {
     let html2canvasPromise = null;
+
+    const VIEW_PROFILE_BG = "#232323";
+
+    /** Text colors from the active workspace theme (body / headings); same card bg for all themes. */
+    function getThemeProfileColors() {
+        const fallback = {
+            accent: "#d4af37",
+            text: "#ffffff",
+            muted: "#b48808"
+        };
+        if (!document.body) return fallback;
+
+        const text = getComputedStyle(document.body).color || fallback.text;
+
+        let accent = fallback.accent;
+        const accentEl = document.querySelector("h1, h2, .navbar-title");
+        if (accentEl) {
+            const c = getComputedStyle(accentEl).color;
+            if (c && c !== "rgba(0, 0, 0, 0)") accent = c;
+        }
+
+        let muted = fallback.muted;
+        const mutedEl = document.querySelector(".desc, .theme-card-desc, h3");
+        if (mutedEl) {
+            const c = getComputedStyle(mutedEl).color;
+            if (c) muted = c;
+        }
+
+        return { accent, text, muted };
+    }
+
+    function applyViewProfileColors(panel, colors) {
+        if (!panel || !colors) return;
+        panel.style.background = VIEW_PROFILE_BG;
+        panel.style.color = colors.text;
+        panel.style.setProperty("--profile-view-accent", colors.accent);
+        panel.style.setProperty("--profile-view-text", colors.text);
+        panel.style.setProperty("--profile-view-muted", colors.muted);
+        panel.querySelectorAll(".profile-view-accent").forEach(function (el) {
+            el.style.color = colors.accent;
+        });
+        panel.querySelectorAll(".profile-view-text").forEach(function (el) {
+            el.style.color = colors.text;
+        });
+        panel.querySelectorAll(".profile-view-muted").forEach(function (el) {
+            el.style.color = colors.muted;
+        });
+        const shareIcon = panel.querySelector(".profile-view-share-btn svg");
+        if (shareIcon) shareIcon.setAttribute("stroke", colors.accent);
+    }
 
     function loadHtml2Canvas() {
         if (window.html2canvas) return Promise.resolve(window.html2canvas);
@@ -101,7 +154,6 @@
         if (document.getElementById("profile-panel-overlay")) return;
 
         const stored = getStoredProfile();
-
         const overlay = document.createElement("div");
         overlay.id = "profile-panel-overlay";
         overlay.style.cssText = `
@@ -114,8 +166,6 @@
         const panel = document.createElement("div");
         panel.className = "profile-panel-modal";
         panel.style.cssText = `
-            background: #232323;
-            color: #fff;
             border-radius: 12px;
             padding: 36px 28px 28px 28px;
             min-width: 320px;
@@ -130,7 +180,7 @@
 
         const title = document.createElement("h2");
         title.textContent = "Profile Settings";
-        title.style.cssText = "color: #d4af37; margin-bottom: 26px; font-size:1.3em; text-align:center;";
+        title.style.cssText = "color: #d4af37; margin-bottom: 23px; font-size:1.3em; text-align:center;";
 
         const avatarPreview = document.createElement("img");
         avatarPreview.src = stored.avatarUrl || "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
@@ -153,7 +203,8 @@
             width:100%; padding:10px; font-size:1em;
             margin-bottom:15px; border-radius:5px;
             border:1px solid #bab07c;
-            background: #191919; color:#fff;
+            background: var(--profile-panel-input-bg, #fff);
+            color: var(--profile-panel-input-color, #111);
         `;
         avatarInput.addEventListener("input", function() {
             let url = avatarInput.value.trim();
@@ -172,7 +223,8 @@
             width:100%; padding:10px; font-size:1em;
             margin-bottom:15px; border-radius:5px;
             border:1px solid #bab07c;
-            background: #191919; color:#fff;
+            background: var(--profile-panel-input-bg, #fff);
+            color: var(--profile-panel-input-color, #111);
         `;
 
         const clanTagLabel = document.createElement("label");
@@ -186,7 +238,8 @@
             width:100%; padding:10px; font-size:1em;
             margin-bottom:15px; border-radius:5px;
             border:1px solid #bab07c;
-            background: #191919; color:#fff;
+            background: var(--profile-panel-input-bg, #fff);
+            color: var(--profile-panel-input-color, #111);
         `;
 
         const discordLabel = document.createElement("label");
@@ -200,7 +253,8 @@
             width:100%; padding:10px; font-size:1em;
             margin-bottom:15px; border-radius:5px;
             border:1px solid #bab07c;
-            background: #191919; color:#fff;
+            background: var(--profile-panel-input-bg, #fff);
+            color: var(--profile-panel-input-color, #111);
         `;
 
         const emailLabel = document.createElement("label");
@@ -214,7 +268,8 @@
             width:100%; padding:10px; font-size:1em;
             margin-bottom:15px; border-radius:5px;
             border:1px solid #bab07c;
-            background: #191919; color:#fff;
+            background: var(--profile-panel-input-bg, #fff);
+            color: var(--profile-panel-input-color, #111);
         `;
 
         const roleLabel = document.createElement("label");
@@ -225,7 +280,8 @@
             width:100%; padding:10px; font-size:1em;
             margin-bottom:20px; border-radius:5px;
             border:1px solid #bab07c;
-            background: #191919; color:#fff;
+            background: var(--profile-panel-input-bg, #fff);
+            color: var(--profile-panel-input-color, #111);
         `;
 
         const emptyOpt = document.createElement("option");
@@ -254,7 +310,7 @@
 
         roleSelect.addEventListener('change', function () {
             if (roleSelect.value === 'Clan Leader' && !leaderPincodeChecked) {
-                setTimeout(function () { // Ensure browser shows prompt after focus leaves select
+                setTimeout(function () {
                     let pin = prompt('Enter Clan Leader Passcode:');
                     if (pin !== '1738') {
                         roleSelect.value = "";
@@ -346,11 +402,14 @@
             overlay?.parentNode?.removeChild(overlay);
             document.removeEventListener("keydown", escListener);
         }
+
     }
 
     function openViewProfilePanel() {
         if (document.getElementById("view-profile-overlay")) return;
         const profile = getStoredProfile();
+
+        let profileColors = getThemeProfileColors();
 
         const overlay = document.createElement("div");
         overlay.id = "view-profile-overlay";
@@ -364,8 +423,7 @@
         const panel = document.createElement("div");
         panel.className = "view-profile-modal";
         panel.style.cssText = `
-            background: #191919;
-            color: #fff;
+            background: ${VIEW_PROFILE_BG};
             border-radius: 17px;
             padding: 38px 36px 28px 36px;
             min-width: 330px;
@@ -376,6 +434,7 @@
             align-items: center;
             position: relative;
         `;
+        applyViewProfileColors(panel, profileColors);
 
         const avatarImg = document.createElement("img");
         avatarImg.src = profile.avatarUrl || "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
@@ -390,31 +449,59 @@
         `;
 
         const nameEl = document.createElement("div");
+        nameEl.className = "profile-view-accent";
         nameEl.textContent = profile.nickname || "No nickname set";
-        nameEl.style.cssText = "color:#d4af37;font-size:1.18em;margin-bottom: 7px;font-weight:bold;text-align:center;";
+        nameEl.style.cssText = "font-size:1.18em;margin-bottom:7px;font-weight:bold;text-align:center;";
+
+        const fieldStyle = "font-size:1em;margin-bottom:6px;text-align:center;";
+        const mutedStyle = fieldStyle + "font-weight:bold;";
 
         const clanEl = document.createElement("div");
-        clanEl.textContent = profile.clanTag ? ("Clan Tag: " + profile.clanTag) : "No clan tag set";
-        clanEl.style.cssText = "color:#fffbe8cc;font-size:1em;margin-bottom: 6px;text-align:center;";
+        if (profile.clanTag) {
+            clanEl.className = "profile-view-text";
+            clanEl.textContent = "Clan Tag: " + profile.clanTag;
+            clanEl.style.cssText = fieldStyle;
+        } else {
+            clanEl.className = "profile-view-muted";
+            clanEl.textContent = "No clan tag set";
+            clanEl.style.cssText = mutedStyle;
+        }
 
         const discordEl = document.createElement("div");
-        discordEl.textContent = profile.discord ? ("Discord: " + profile.discord) : "No Discord username set";
-        discordEl.style.cssText = "color:#fffbe8cc;font-size:1em;margin-bottom: 6px;text-align:center;";
+        if (profile.discord) {
+            discordEl.className = "profile-view-text";
+            discordEl.textContent = "Discord: " + profile.discord;
+            discordEl.style.cssText = fieldStyle;
+        } else {
+            discordEl.className = "profile-view-muted";
+            discordEl.textContent = "No Discord username set";
+            discordEl.style.cssText = mutedStyle;
+        }
 
         const emailEl = document.createElement("div");
-        emailEl.textContent = profile.email ? ("Email: " + profile.email) : "No email set";
-        emailEl.style.cssText = "color:#fffbe8cc;font-size:1em;margin-bottom: 6px;text-align:center;";
+        if (profile.email) {
+            emailEl.className = "profile-view-text";
+            emailEl.textContent = "Email: " + profile.email;
+            emailEl.style.cssText = fieldStyle;
+        } else {
+            emailEl.className = "profile-view-muted";
+            emailEl.textContent = "No email set";
+            emailEl.style.cssText = mutedStyle;
+        }
 
         const roleEl = document.createElement("div");
         if (profile.role === "Elder" || profile.role === "Co-leader" || profile.role === "Clan Leader") {
+            roleEl.className = "profile-view-accent";
             roleEl.textContent = `Role: ${profile.role}`;
-            roleEl.style.cssText = "color:#d4af37;font-size:1em;margin-bottom: 22px;text-align:center;";
+            roleEl.style.cssText = fieldStyle + "margin-bottom:22px;font-weight:bold;";
         } else {
+            roleEl.className = "profile-view-muted";
             roleEl.textContent = "No role set";
-            roleEl.style.cssText = "color:#fffbe8cc;font-size:1em;margin-bottom: 22px;text-align:center;";
+            roleEl.style.cssText = mutedStyle + "margin-bottom:22px;";
         }
 
         const shareBtn = document.createElement("button");
+        shareBtn.className = "profile-view-share-btn";
         shareBtn.title = "Download image to share!";
         shareBtn.style.cssText = `
             position: absolute;
@@ -428,9 +515,9 @@
             transition: background 0.12s;
             z-index: 2;
         `;
-        shareBtn.onmouseenter = () => { shareBtn.style.background = "#242424"; };
+        shareBtn.onmouseenter = () => { shareBtn.style.background = "#fafafd"; };
         shareBtn.onmouseleave = () => { shareBtn.style.background = "none"; };
-        shareBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
+        shareBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${profileColors.accent}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
 
         shareBtn.onclick = function (e) {
             e.preventDefault();
@@ -438,9 +525,9 @@
 
             loadHtml2Canvas().then((html2canvas) => {
                 const origBg = panel.style.background;
-                panel.style.background = "#191919";
+                panel.style.background = VIEW_PROFILE_BG;
                 html2canvas(panel, {
-                    backgroundColor: "#191919",
+                    backgroundColor: VIEW_PROFILE_BG,
                     useCORS: true,
                     logging: false,
                     scale: 2
@@ -481,6 +568,9 @@
         `;
         closeBtn.onclick = closePanel;
 
+        // Insert a CSS style for .view-profile-modal and theming
+        injectProfilePanelStyle();
+
         panel.appendChild(shareBtn);
         panel.appendChild(avatarImg);
         panel.appendChild(nameEl);
@@ -489,6 +579,7 @@
         panel.appendChild(emailEl);
         panel.appendChild(roleEl);
         panel.appendChild(closeBtn);
+        applyViewProfileColors(panel, profileColors);
 
         overlay.onclick = function(e) {
             if (e.target === overlay) closePanel();
@@ -501,7 +592,14 @@
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
 
+        function onWorkspaceThemeChange() {
+            profileColors = getThemeProfileColors();
+            applyViewProfileColors(panel, profileColors);
+        }
+        window.addEventListener("glw-theme-change", onWorkspaceThemeChange);
+
         function closePanel() {
+            window.removeEventListener("glw-theme-change", onWorkspaceThemeChange);
             overlay?.parentNode?.removeChild(overlay);
             document.removeEventListener("keydown", escListener);
         }
@@ -509,12 +607,46 @@
 
     function injectPanelAnimationCss() {
         if (document.getElementById("profile-panel-style")) return;
+        injectProfilePanelStyle();
         const style = document.createElement("style");
         style.id = "profile-panel-style";
         style.textContent = `
             @keyframes profilePanelFadeIn {
                 from { opacity:0; }
                 to   { opacity:1; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    /** Edit panel: themed via themes/*.css. View profile: fixed card bg, text from GLWTheme page colors. */
+    function injectProfilePanelStyle() {
+        if (document.getElementById("profile-panel-theme-style")) return;
+        const style = document.createElement("style");
+        style.id = "profile-panel-theme-style";
+        style.textContent = `
+            .view-profile-modal {
+                background: #232323 !important;
+            }
+            .view-profile-modal .profile-view-accent {
+                color: var(--profile-view-accent, #d4af37);
+            }
+            .view-profile-modal .profile-view-text {
+                color: var(--profile-view-text, #fff);
+            }
+            .view-profile-modal .profile-view-muted {
+                color: var(--profile-view-muted, #b48808);
+            }
+            .profile-panel-modal label,
+            .profile-panel-modal h2 {
+                color: #b48808 !important;
+            }
+            .profile-panel-modal input, .profile-panel-modal select {
+                border: 1px solid #bab07c;
+            }
+            .profile-panel-modal input:focus, .profile-panel-modal select:focus {
+                border-color: #d4af37 !important;
+                outline: none !important;
             }
         `;
         document.head.appendChild(style);
