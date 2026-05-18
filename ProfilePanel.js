@@ -359,7 +359,7 @@
             creationDatePanelDiv.textContent = "Account Creation Date: " + formatCreationDate(creationDate);
         } else {
             const setCreationBtn = document.createElement("button");
-            setCreationBtn.textContent = "Set Creation Date";
+            setCreationBtn.textContent = "Set Issue Date";
             setCreationBtn.type = "button";
             setCreationBtn.style.cssText = `
                 background: #5fbc32;
@@ -590,7 +590,7 @@
         const creationDateViewDiv = document.createElement("div");
         if (profile.creationDate) {
             creationDateViewDiv.className = "profile-view-text";
-            creationDateViewDiv.textContent = "Creation Date: " + formatCreationDate(profile.creationDate);
+            creationDateViewDiv.textContent = "Issue Date: " + formatCreationDate(profile.creationDate);
             creationDateViewDiv.style.cssText = fieldStyle + "margin-bottom:8px;";
             panel.appendChild(creationDateViewDiv);
         }
