@@ -7,11 +7,37 @@
         html2canvasPromise = new Promise((resolve, reject) => {
             const script = document.createElement("script");
             script.src = "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js";
+            script.crossOrigin = "anonymous"; // ensure crossorigin for CORS images
             script.onload = () => resolve(window.html2canvas);
             script.onerror = () => reject(new Error("Failed to load html2canvas"));
             document.head.appendChild(script);
         });
         return html2canvasPromise;
+    }
+
+    function isLightTheme() {
+        return document.documentElement.classList.contains("light-mode");
+    }
+
+    function viewProfileColors() {
+        if (isLightTheme()) {
+            return {
+                panelBg: "#ffffff",
+                panelFg: "#1e1e1e",
+                muted: "#5a5a5a",
+                accent: "#9a7b10",
+                avatarBg: "#f0f0ee",
+                shareHover: "#eee"
+            };
+        }
+        return {
+            panelBg: "#191919",
+            panelFg: "#fff",
+            muted: "#fffbe8cc",
+            accent: "#d4af37",
+            avatarBg: "#232323",
+            shareHover: "#242424"
+        };
     }
 
     function injectProfileButtons() {
@@ -351,6 +377,7 @@
     function openViewProfilePanel() {
         if (document.getElementById("view-profile-overlay")) return;
         const profile = getStoredProfile();
+        const colors = viewProfileColors();
 
         const overlay = document.createElement("div");
         overlay.id = "view-profile-overlay";
@@ -364,8 +391,8 @@
         const panel = document.createElement("div");
         panel.className = "view-profile-modal";
         panel.style.cssText = `
-            background: #191919;
-            color: #fff;
+            background: ${colors.panelBg};
+            color: ${colors.panelFg};
             border-radius: 17px;
             padding: 38px 36px 28px 36px;
             min-width: 330px;
@@ -377,6 +404,25 @@
             position: relative;
         `;
 
+        // Fix for profile image not appearing in downloads
+        // 1. Create an off-DOM <img> to ensure image is loaded before rendering.
+        // 2. Also, set crossOrigin if cloud avatars or user avatars.
+        function ensureAvatarImgLoaded(img) {
+            return new Promise((resolve, reject) => {
+                if (img.complete && img.naturalWidth !== 0) {
+                    resolve();
+                } else {
+                    img.onload = resolve;
+                    img.onerror = () => {
+                        // fallback to default avatar if user avatar didn't load, then resolve
+                        img.src = "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
+                        img.onload = resolve;
+                        img.onerror = resolve;
+                    };
+                }
+            });
+        }
+
         const avatarImg = document.createElement("img");
         avatarImg.src = profile.avatarUrl || "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
         avatarImg.alt = "Avatar";
@@ -384,34 +430,48 @@
             width: 90px;
             height: 90px;
             border-radius: 50%;
-            background: #232323;
+            background: ${colors.avatarBg};
             margin-bottom: 16px;
             object-fit: cover;
         `;
 
+        // Add crossOrigin if external image (to allow CORS for html2canvas)
+        try {
+            const urlObj = new URL(avatarImg.src);
+            if (urlObj.origin !== location.origin) {
+                avatarImg.crossOrigin = "anonymous";
+            }
+        } catch (e) {}
+
+        const detailStyle = `color:${colors.muted};font-size:1em;text-align:center;`;
+
         const nameEl = document.createElement("div");
         nameEl.textContent = profile.nickname || "No nickname set";
-        nameEl.style.cssText = "color:#d4af37;font-size:1.18em;margin-bottom: 7px;font-weight:bold;text-align:center;";
+        nameEl.style.cssText = `color:${colors.accent};font-size:1.18em;margin-bottom: 7px;font-weight:bold;text-align:center;`;
 
         const clanEl = document.createElement("div");
+        clanEl.className = "view-profile-detail";
         clanEl.textContent = profile.clanTag ? ("Clan Tag: " + profile.clanTag) : "No clan tag set";
-        clanEl.style.cssText = "color:#fffbe8cc;font-size:1em;margin-bottom: 6px;text-align:center;";
+        clanEl.style.cssText = detailStyle + "margin-bottom: 6px;";
 
         const discordEl = document.createElement("div");
+        discordEl.className = "view-profile-detail";
         discordEl.textContent = profile.discord ? ("Discord: " + profile.discord) : "No Discord username set";
-        discordEl.style.cssText = "color:#fffbe8cc;font-size:1em;margin-bottom: 6px;text-align:center;";
+        discordEl.style.cssText = detailStyle + "margin-bottom: 6px;";
 
         const emailEl = document.createElement("div");
+        emailEl.className = "view-profile-detail";
         emailEl.textContent = profile.email ? ("Email: " + profile.email) : "No email set";
-        emailEl.style.cssText = "color:#fffbe8cc;font-size:1em;margin-bottom: 6px;text-align:center;";
+        emailEl.style.cssText = detailStyle + "margin-bottom: 6px;";
 
         const roleEl = document.createElement("div");
+        roleEl.className = "view-profile-detail";
         if (profile.role === "Elder" || profile.role === "Co-leader" || profile.role === "Clan Leader") {
             roleEl.textContent = `Role: ${profile.role}`;
-            roleEl.style.cssText = "color:#d4af37;font-size:1em;margin-bottom: 22px;text-align:center;";
+            roleEl.style.cssText = `color:${colors.accent};font-size:1em;margin-bottom: 22px;text-align:center;`;
         } else {
             roleEl.textContent = "No role set";
-            roleEl.style.cssText = "color:#fffbe8cc;font-size:1em;margin-bottom: 22px;text-align:center;";
+            roleEl.style.cssText = detailStyle + "margin-bottom: 22px;";
         }
 
         const shareBtn = document.createElement("button");
@@ -428,7 +488,7 @@
             transition: background 0.12s;
             z-index: 2;
         `;
-        shareBtn.onmouseenter = () => { shareBtn.style.background = "#242424"; };
+        shareBtn.onmouseenter = () => { shareBtn.style.background = colors.shareHover; };
         shareBtn.onmouseleave = () => { shareBtn.style.background = "none"; };
         shareBtn.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`;
 
@@ -437,28 +497,39 @@
             e.stopPropagation();
 
             loadHtml2Canvas().then((html2canvas) => {
-                const origBg = panel.style.background;
-                panel.style.background = "#191919";
-                html2canvas(panel, {
-                    backgroundColor: "#191919",
-                    useCORS: true,
-                    logging: false,
-                    scale: 2
-                }).then(canvas => {
-                    panel.style.background = origBg;
-                    canvas.toBlob(function(blob) {
-                        if (!blob) return;
-                        const link = document.createElement('a');
-                        link.href = URL.createObjectURL(blob);
-                        link.download = `${(profile.nickname || "profile")}_card.png`;
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        setTimeout(() => { URL.revokeObjectURL(link.href); }, 200);
-                    }, 'image/png');
-                }).catch(()=>{
-                    panel.style.background = origBg;
-                    alert("Sorry! Could not generate image.");
+                // Ensure avatar is loaded before snapshot!
+                ensureAvatarImgLoaded(avatarImg).then(() => {
+                    // temporarily force image to decode if possible (for browsers that support)
+                    if (avatarImg.decode) {
+                        avatarImg.decode().catch(() => {});
+                    }
+
+                    const origBg = panel.style.background;
+                    panel.style.background = "#191919";
+
+                    // html2canvas may miss external (cross-origin) images unless they are loaded+decoded with crossOrigin and CORS is allowed.
+
+                    html2canvas(panel, {
+                        backgroundColor: "#191919",
+                        useCORS: true,
+                        logging: false,
+                        scale: 2
+                    }).then(canvas => {
+                        panel.style.background = origBg;
+                        canvas.toBlob(function(blob) {
+                            if (!blob) return;
+                            const link = document.createElement('a');
+                            link.href = URL.createObjectURL(blob);
+                            link.download = `${(profile.nickname || "profile")}_card.png`;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            setTimeout(() => { URL.revokeObjectURL(link.href); }, 200);
+                        }, 'image/png');
+                    }).catch(()=>{
+                        panel.style.background = origBg;
+                        alert("Sorry! Could not generate image.");
+                    });
                 });
             }).catch(() => {
                 alert("Image sharing functionality failed to load. Please try again.");

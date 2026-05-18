@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <title>Grinderouz Leaders Workspace - Settings</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="theme-color" content="#d4af37">
     <link rel="icon" type="image/png" href="assets/navicon.png">
     <link rel="stylesheet" href="styles.css">
+    <script src="theme.js"></script>
+    <link rel="manifest" href="manifest.json">
     <style>
         body {
             background: #191919;
@@ -83,6 +86,7 @@
             width: 100%;
         }
         .settings-btn,
+        .clear-btn,
         label[for="importInput"] {
             background: rgb(49, 49, 49);
             color: #ffffff;
@@ -100,6 +104,7 @@
             font-family: inherit;
         }
         .settings-btn:hover,
+        .clear-btn:hover,
         label[for="importInput"]:hover {
             background: #f3f3f1;
             color: #000000;
@@ -120,6 +125,13 @@
             margin-top: 11px;
             text-align: center;
         }
+        #storageUsage {
+            font-size: 0.93em;
+            color: #abdfa9;
+            margin-bottom: 6px;
+            text-align: center;
+            width: 100%;
+        }
     </style>
     <script src="lock.js"></script>
     <script src="ProfilePanel.js"></script>
@@ -138,10 +150,13 @@
                 <button class="settings-btn" id="downloadBtn" type="button">📦 Export My Data (.png)</button>
                 <label for="importInput" style="width:100%;display:block;">⬆️ Import Data (.png → localStorage)</label>
                 <input type="file" id="importInput" accept="image/png">
+                <div id="storageUsage"></div>
+                <button class="clear-btn" id="clearCacheBtn" type="button">🗑️ Clear All Data</button>
             </div>
             <div class="tip">
                 <b>What does this save?</b><br>
-                All <i>localStorage</i> keys for this site are included.<br>
+                All <i>localStorage</i> keys for this site are included,<br>
+                <b>including your currently selected theme</b>.<br>
                 <b>What happens on import?</b><br>
                 Replaces any current local data with your backup!
             </div>
@@ -208,8 +223,10 @@
             reader.readAsDataURL(file);
         }
 
-        function getAllLocalData() {
+        // Ensures the glw_theme key is included and up-to-date in the exported data.
+        function getAllLocalDataWithTheme() {
             const out = {};
+            // Copy all keys from localStorage as usual
             for (let i = 0; i < localStorage.length; ++i) {
                 const k = localStorage.key(i);
                 try {
@@ -219,6 +236,11 @@
                     out[k] = null;
                 }
             }
+            // Ensure selected theme is explicitly preserved using the GLWTheme API if available
+            if (window.GLWTheme && typeof window.GLWTheme.getId === "function") {
+                // for legacy or corrupt data, always export an explicit "glw_theme" field
+                out["glw_theme"] = window.GLWTheme.getId();
+            }
             return out;
         }
 
@@ -227,12 +249,36 @@
             Object.keys(obj).forEach(k => localStorage.setItem(k, obj[k]));
         }
 
+        function getLocalStorageSize() {
+            // Returns size in bytes and a pretty string
+            let total = 0;
+            for (let i = 0; i < localStorage.length; ++i) {
+                const key = localStorage.key(i);
+                total += key.length + (localStorage.getItem(key)?.length || 0);
+            }
+            // Browser storage is in UTF-16, so 2 bytes per char
+            total *= 2;
+            // Format readable string
+            if (total < 1024) return {bytes: total, str: total + " Bytes"};
+            if (total < 1024*1024) return {bytes: total, str: (total/1024).toFixed(2) + " KB"};
+            return {bytes: total, str: (total/1024/1024).toFixed(2) + " MB"};
+        }
+
+        function updateStorageUsage() {
+            const usageElem = document.getElementById('storageUsage');
+            if (!usageElem) return;
+            const usage = getLocalStorageSize();
+            usageElem.textContent = `Local Storage Used: ${usage.str}`;
+        }
+
         const downloadBtn = document.getElementById('downloadBtn');
         const importInput = document.getElementById('importInput');
+        const clearCacheBtn = document.getElementById('clearCacheBtn');
         const statusMsg = document.getElementById('statusMsg');
 
         downloadBtn.onclick = function() {
-            const allData = getAllLocalData();
+            // Use the new function to make sure theme is included!
+            const allData = getAllLocalDataWithTheme();
             const json = JSON.stringify(allData, null, 2);
             const dataUrl = jsonToPngDataUrl(json);
             const a = document.createElement('a');
@@ -260,7 +306,16 @@
                             throw new Error("Invalid backup file format.");
                         }
                         restoreAllLocalData(obj);
+                        // If a theme id is present, apply it with GLWTheme if possible
+                        if (
+                            obj["glw_theme"] &&
+                            window.GLWTheme &&
+                            typeof window.GLWTheme.setTheme === "function"
+                        ) {
+                            window.GLWTheme.setTheme(obj["glw_theme"]);
+                        }
                         statusMsg.textContent = "✅ Import successful! Refresh page to see new data.";
+                        updateStorageUsage();
                     } catch (e) {
                         statusMsg.textContent = "❌ Failed: This file is not a valid GLW backup.";
                     }
@@ -270,6 +325,23 @@
                 }
             );
         };
+
+        clearCacheBtn.onclick = function() {
+            if (confirm("Are you sure you want to clear all locally saved data? This cannot be undone.")) {
+                localStorage.clear();
+                statusMsg.textContent = "🗑️ All data cleared. Reload the page to finish reset.";
+                updateStorageUsage();
+            }
+        };
+
+        // Initial update on load
+        updateStorageUsage();
+
+        // Optionally, update usage when tab regains focus (in case another tab modifies localStorage)
+        window.addEventListener('focus', function() {
+            updateStorageUsage();
+        });
+
     </script>
 </body>
 </html>

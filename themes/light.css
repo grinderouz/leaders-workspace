@@ -1,0 +1,268 @@
+/* Light theme — html[data-theme="light"] / .light-mode */
+
+html[data-theme="light"],
+html.light-mode,
+html[data-theme="light"] body,
+html.light-mode body {
+    background: #f4f4f2 !important;
+    color: #1e1e1e !important;
+}
+
+html[data-theme="light"],
+html.light-mode {
+    scrollbar-color: #b89a2b #e8e8e6;
+}
+
+html[data-theme="light"] body::-webkit-scrollbar,
+html.light-mode body::-webkit-scrollbar {
+    background: #e8e8e6 !important;
+}
+
+html[data-theme="light"] body::-webkit-scrollbar-thumb,
+html.light-mode body::-webkit-scrollbar-thumb {
+    background: #d4af37 !important;
+    border-color: #e8e8e6 !important;
+}
+
+html[data-theme="light"] body::-webkit-scrollbar-track,
+html.light-mode body::-webkit-scrollbar-track {
+    background: #e8e8e6 !important;
+}
+
+html[data-theme="light"] a,
+html.light-mode a {
+    color: #9a7b10;
+}
+
+html[data-theme="light"] a:hover,
+html.light-mode a:hover {
+    color: #1e1e1e;
+}
+
+html[data-theme="light"] .card,
+html[data-theme="light"] details,
+html.light-mode .card,
+html.light-mode details {
+    background: #ffffff !important;
+    color: #2a2a2a !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06) !important;
+    border-left-color: #d4af37 !important;
+}
+
+html[data-theme="light"] h2,
+html[data-theme="light"] h3,
+html.light-mode h2,
+html.light-mode h3 {
+    color: #2a2a2a;
+}
+
+html[data-theme="light"] #navbar-container,
+html[data-theme="light"] .navbar-header,
+html.light-mode #navbar-container,
+html.light-mode .navbar-header {
+    background: #ffffff !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+    border-bottom-color: #d4af37 !important;
+}
+
+html[data-theme="light"] .navbar-logo,
+html.light-mode .navbar-logo {
+    background: #f0f0ee !important;
+    border-color: #ddd !important;
+}
+
+html[data-theme="light"] .navbar-title,
+html[data-theme="light"] .nav-link,
+html.light-mode .navbar-title,
+html.light-mode .nav-link {
+    color: #9a7b10 !important;
+}
+
+html[data-theme="light"] .hamburger span,
+html.light-mode .hamburger span {
+    background-color: #9a7b10 !important;
+}
+
+html[data-theme="light"] .nav-link:hover,
+html[data-theme="light"] .nav-link:focus,
+html[data-theme="light"] .nav-link.active,
+html.light-mode .nav-link:hover,
+html.light-mode .nav-link:focus,
+html.light-mode .nav-link.active {
+    color: #1e1e1e !important;
+}
+
+html[data-theme="light"] .navbar-user-nickname,
+html.light-mode .navbar-user-nickname {
+    color: #9a7b10 !important;
+}
+
+html[data-theme="light"] .navbar-user-avatar,
+html.light-mode .navbar-user-avatar {
+    background: #eee !important;
+}
+
+html[data-theme="light"] .banner-header,
+html.light-mode .banner-header {
+    background-color: #e8e6e0 !important;
+}
+
+html[data-theme="light"] .banner-header-inner,
+html.light-mode .banner-header-inner {
+    background: rgba(80, 80, 80, 0.651) !important;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1) !important;
+}
+
+html[data-theme="light"] .banner-header-inner h1,
+html.light-mode .banner-header-inner h1 {
+    color: #d4af37 !important;
+}
+
+html[data-theme="light"] .banner-header-inner span,
+html.light-mode .banner-header-inner span {
+    color: #4a4a4a !important;
+}
+
+html[data-theme="light"] .iframe-newtab-btn,
+html.light-mode .iframe-newtab-btn {
+    background: #ffffff !important;
+    color: #9a7b10 !important;
+    border: 1px solid #d4af37 !important;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06) !important;
+}
+
+html[data-theme="light"] .iframe-newtab-btn:hover,
+html[data-theme="light"] .iframe-newtab-btn:focus,
+html.light-mode .iframe-newtab-btn:hover,
+html.light-mode .iframe-newtab-btn:focus {
+    background: #d4af37 !important;
+    color: #1e1e1e !important;
+}
+
+html[data-theme="light"] .container,
+html.light-mode .container {
+    background: #ffffff !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-theme="light"] h1,
+html.light-mode h1 {
+    color: #9a7b10 !important;
+}
+
+html[data-theme="light"] .desc,
+html.light-mode .desc {
+    color: #4a4a4a !important;
+}
+
+html[data-theme="light"] .desc span,
+html.light-mode .desc span {
+    color: #6b6b6b !important;
+}
+
+html[data-theme="light"] .settings-btn,
+html[data-theme="light"] .clear-btn,
+html[data-theme="light"] label[for="importInput"],
+html.light-mode .settings-btn,
+html.light-mode .clear-btn,
+html.light-mode label[for="importInput"] {
+    background: #f0f0ee !important;
+    color: #1e1e1e !important;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06) !important;
+}
+
+html[data-theme="light"] .settings-btn:hover,
+html[data-theme="light"] .clear-btn:hover,
+html[data-theme="light"] label[for="importInput"]:hover,
+html.light-mode .settings-btn:hover,
+html.light-mode .clear-btn:hover,
+html.light-mode label[for="importInput"]:hover {
+    background: #d4af37 !important;
+    color: #1e1e1e !important;
+}
+
+html[data-theme="light"] .tip,
+html.light-mode .tip {
+    color: #5a5a5a !important;
+}
+
+html[data-theme="light"] .status,
+html.light-mode .status {
+    color: #9a7b10 !important;
+}
+
+html[data-theme="light"] #storageUsage,
+html.light-mode #storageUsage {
+    color: #3d7a3a !important;
+}
+
+html[data-theme="light"] .theme-card,
+html.light-mode .theme-card {
+    background: #ffffff !important;
+    border-color: #e0e0dc !important;
+}
+
+html[data-theme="light"] .theme-card.is-active,
+html.light-mode .theme-card.is-active {
+    border-color: #d4af37 !important;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.35) !important;
+}
+
+html[data-theme="light"] .theme-card-name,
+html.light-mode .theme-card-name {
+    color: #2a2a2a !important;
+}
+
+html[data-theme="light"] .theme-card-desc,
+html.light-mode .theme-card-desc {
+    color: #5a5a5a !important;
+}
+
+html[data-theme="light"] #profile-btn-panel-wrapper,
+html.light-mode #profile-btn-panel-wrapper {
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: 0 3px 18px rgba(0, 0, 0, 0.1) !important;
+}
+
+html[data-theme="light"] #profile-btn-panel,
+html.light-mode #profile-btn-panel {
+    background: #f5f5f3 !important;
+    color: #9a7b10 !important;
+}
+
+html[data-theme="light"] #view-profile-btn-panel,
+html.light-mode #view-profile-btn-panel {
+    background: #ebebea !important;
+    color: #1e1e1e !important;
+}
+
+html[data-theme="light"] .profile-panel-modal,
+html[data-theme="light"] #profile-panel-overlay > div,
+html[data-theme="light"] #view-profile-overlay > div,
+html.light-mode .profile-panel-modal,
+html.light-mode #profile-panel-overlay > div,
+html.light-mode #view-profile-overlay > div {
+    background: #ffffff !important;
+    color: #1e1e1e !important;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.12) !important;
+}
+
+html[data-theme="light"] #profile-panel-overlay input,
+html[data-theme="light"] #profile-panel-overlay select,
+html[data-theme="light"] #view-profile-overlay input,
+html[data-theme="light"] #view-profile-overlay select,
+html.light-mode #profile-panel-overlay input,
+html.light-mode #profile-panel-overlay select,
+html.light-mode #view-profile-overlay input,
+html.light-mode #view-profile-overlay select {
+    background: #f5f5f3 !important;
+    color: #1e1e1e !important;
+    border-color: #ccc !important;
+}
+
+html[data-theme="light"] #profile-panel-overlay [style*="color:#fffbe8"],
+html[data-theme="light"] #view-profile-overlay [style*="color:#fffbe8"],
+html.light-mode #profile-panel-overlay [style*="color:#fffbe8"],
+html.light-mode #view-profile-overlay [style*="color:#fffbe8"] {
+    color: #4a4a4a !important;
+}

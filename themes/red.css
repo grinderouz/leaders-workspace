@@ -1,0 +1,222 @@
+/* Crimson Red theme — crimson, charcoal, and amber */
+
+html[data-theme="crimsonred"],
+html[data-theme="crimsonred"] body {
+    background: #141018 !important;
+    color: #fff5f5 !important;
+}
+
+html[data-theme="crimsonred"] {
+    scrollbar-color: #ff4655 #1a1218;
+}
+
+html[data-theme="crimsonred"] body::-webkit-scrollbar {
+    background: #1a1218 !important;
+}
+
+html[data-theme="crimsonred"] body::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #ff4655, #ffb020) !important;
+    border-color: #1a1218 !important;
+}
+
+html[data-theme="crimsonred"] body::-webkit-scrollbar-track {
+    background: #1a1218 !important;
+}
+
+html[data-theme="crimsonred"] a {
+    color: #ffb020 !important;
+}
+
+html[data-theme="crimsonred"] a:hover {
+    color: #ff8a7a !important;
+}
+
+html[data-theme="crimsonred"] .card,
+html[data-theme="crimsonred"] details {
+    background: #221420 !important;
+    color: #ffe8e4 !important;
+    box-shadow: 0 4px 20px rgba(255, 70, 85, 0.12) !important;
+    border-left-color: #ff4655 !important;
+}
+
+html[data-theme="crimsonred"] h2,
+html[data-theme="crimsonred"] h3 {
+    color: #ffb020 !important;
+}
+
+html[data-theme="crimsonred"] #navbar-container,
+html[data-theme="crimsonred"] .navbar-header {
+    background: #1a1218 !important;
+    box-shadow: 0 4px 18px rgba(255, 70, 85, 0.2) !important;
+    border-bottom-color: #ff4655 !important;
+}
+
+html[data-theme="crimsonred"] .navbar-logo {
+    background: #2a1820 !important;
+    border-color: #ff4655 !important;
+}
+
+html[data-theme="crimsonred"] .navbar-title,
+html[data-theme="crimsonred"] .nav-link {
+    color: #ffb020 !important;
+}
+
+html[data-theme="crimsonred"] .hamburger span {
+    background-color: #ff4655 !important;
+}
+
+html[data-theme="crimsonred"] .nav-link:hover,
+html[data-theme="crimsonred"] .nav-link:focus,
+html[data-theme="crimsonred"] .nav-link.active {
+    color: #fff !important;
+    border-bottom-color: #ff4655 !important;
+}
+
+html[data-theme="crimsonred"] .navbar-user-nickname {
+    color: #ff8a7a !important;
+}
+
+html[data-theme="crimsonred"] .navbar-user-avatar {
+    background: #321820 !important;
+}
+
+html[data-theme="crimsonred"] .banner-header {
+    background-color: #1f1018 !important;
+    filter: saturate(1.15);
+}
+
+html[data-theme="crimsonred"] .banner-header-inner {
+    background: rgba(34, 20, 32, 0.92) !important;
+    box-shadow: 0 4px 28px rgba(255, 70, 85, 0.25) !important;
+    border: 1px solid rgba(255, 70, 85, 0.35);
+}
+
+html[data-theme="crimsonred"] .banner-header-inner h1 {
+    color: #ffb020 !important;
+    text-shadow: 0 0 24px rgba(255, 70, 85, 0.45);
+}
+
+html[data-theme="crimsonred"] .banner-header-inner span {
+    color: #ffc9c0 !important;
+}
+
+html[data-theme="crimsonred"] .iframe-newtab-btn {
+    background: #2a1820 !important;
+    color: #ffb020 !important;
+    border: 1px solid #ff4655 !important;
+}
+
+html[data-theme="crimsonred"] .iframe-newtab-btn:hover,
+html[data-theme="crimsonred"] .iframe-newtab-btn:focus {
+    background: #ff4655 !important;
+    color: #fff !important;
+}
+
+html[data-theme="crimsonred"] .container {
+    background: #221420 !important;
+    box-shadow: 0 6px 36px rgba(255, 70, 85, 0.18) !important;
+    border: 1px solid rgba(255, 70, 85, 0.2);
+}
+
+html[data-theme="crimsonred"] h1 {
+    color: #ffb020 !important;
+}
+
+html[data-theme="crimsonred"] .desc {
+    color: #ffc9c0 !important;
+}
+
+html[data-theme="crimsonred"] .desc span {
+    color: #ff8a7acc !important;
+}
+
+html[data-theme="crimsonred"] .settings-btn,
+html[data-theme="crimsonred"] .clear-btn,
+html[data-theme="crimsonred"] label[for="importInput"] {
+    background: #2a1820 !important;
+    color: #fff5f5 !important;
+    border: 1px solid rgba(255, 70, 85, 0.35);
+}
+
+html[data-theme="crimsonred"] .settings-btn:hover,
+html[data-theme="crimsonred"] .clear-btn:hover,
+html[data-theme="crimsonred"] label[for="importInput"]:hover {
+    background: #ff4655 !important;
+    color: #fff !important;
+}
+
+html[data-theme="crimsonred"] .tip {
+    color: #ffc9c0 !important;
+}
+
+html[data-theme="crimsonred"] .status {
+    color: #ffb020 !important;
+}
+
+html[data-theme="crimsonred"] #storageUsage {
+    color: #7dd87d !important;
+}
+
+html[data-theme="crimsonred"] .theme-card {
+    background: #2a1820 !important;
+    border-color: rgba(255, 70, 85, 0.3) !important;
+}
+
+html[data-theme="crimsonred"] .theme-card.is-active {
+    border-color: #ff4655 !important;
+    box-shadow: 0 0 0 2px rgba(255, 70, 85, 0.45), 0 8px 28px rgba(255, 70, 85, 0.2) !important;
+}
+
+html[data-theme="crimsonred"] .theme-card-name {
+    color: #ffb020 !important;
+}
+
+html[data-theme="crimsonred"] .theme-card-desc {
+    color: #ffc9c0 !important;
+}
+
+html[data-theme="crimsonred"] #profile-btn-panel-wrapper {
+    background: rgba(26, 18, 24, 0.96) !important;
+    box-shadow: 0 4px 22px rgba(255, 70, 85, 0.25) !important;
+    border: 1px solid rgba(255, 70, 85, 0.35);
+}
+
+html[data-theme="crimsonred"] #profile-btn-panel {
+    background: #2a1820 !important;
+    color: #ffb020 !important;
+    border-color: #ff4655 !important;
+}
+
+html[data-theme="crimsonred"] #view-profile-btn-panel {
+    background: #321820 !important;
+    color: #fff5f5 !important;
+    border-color: #ff4655 !important;
+}
+
+html[data-theme="crimsonred"] #profile-panel-overlay > div,
+html[data-theme="crimsonred"] #view-profile-overlay > div {
+    background: #1a1218 !important;
+    color: #fff5f5 !important;
+    box-shadow: 0 8px 40px rgba(255, 70, 85, 0.28) !important;
+    border: 1px solid rgba(255, 70, 85, 0.3);
+}
+
+html[data-theme="crimsonred"] #profile-panel-overlay input,
+html[data-theme="crimsonred"] #profile-panel-overlay select,
+html[data-theme="crimsonred"] #view-profile-overlay input,
+html[data-theme="crimsonred"] #view-profile-overlay select {
+    background: #2a1820 !important;
+    color: #fff5f5 !important;
+    border-color: #ff4655 !important;
+}
+
+html[data-theme="crimsonred"] #profile-panel-overlay [style*="color:#d4af37"],
+html[data-theme="crimsonred"] #view-profile-overlay [style*="color:#d4af37"] {
+    color: #ffb020 !important;
+}
+
+html[data-theme="crimsonred"] #profile-panel-overlay [style*="background:#d4af37"],
+html[data-theme="crimsonred"] #profile-panel-overlay button[type="submit"] {
+    background: linear-gradient(135deg, #ff4655, #ffb020) !important;
+    color: #1a1218 !important;
+}
