@@ -7,7 +7,7 @@
         html2canvasPromise = new Promise((resolve, reject) => {
             const script = document.createElement("script");
             script.src = "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js";
-            script.crossOrigin = "anonymous"; // ensure crossorigin for CORS images
+            script.crossOrigin = "anonymous";
             script.onload = () => resolve(window.html2canvas);
             script.onerror = () => reject(new Error("Failed to load html2canvas"));
             document.head.appendChild(script);
@@ -280,7 +280,7 @@
 
         roleSelect.addEventListener('change', function () {
             if (roleSelect.value === 'Clan Leader' && !leaderPincodeChecked) {
-                setTimeout(function () { // Ensure browser shows prompt after focus leaves select
+                setTimeout(function () {
                     let pin = prompt('Enter Clan Leader Passcode:');
                     if (pin !== '1738') {
                         roleSelect.value = "";
@@ -374,6 +374,7 @@
         }
     }
 
+    // --------- FIX AVATAR IMAGE APPEARING IN VIEW PROFILE ---------
     function openViewProfilePanel() {
         if (document.getElementById("view-profile-overlay")) return;
         const profile = getStoredProfile();
@@ -404,27 +405,21 @@
             position: relative;
         `;
 
-        // Fix for profile image not appearing in downloads
-        // 1. Create an off-DOM <img> to ensure image is loaded before rendering.
-        // 2. Also, set crossOrigin if cloud avatars or user avatars.
-        function ensureAvatarImgLoaded(img) {
-            return new Promise((resolve, reject) => {
-                if (img.complete && img.naturalWidth !== 0) {
-                    resolve();
-                } else {
-                    img.onload = resolve;
-                    img.onerror = () => {
-                        // fallback to default avatar if user avatar didn't load, then resolve
-                        img.src = "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
-                        img.onload = resolve;
-                        img.onerror = resolve;
-                    };
-                }
-            });
-        }
+        // Determine actual avatar image value each time from storage
+        let avatarUrl = (function() {
+            let stored = {};
+            try {
+                stored = JSON.parse(localStorage.getItem("profilePanel") || "{}");
+            } catch (e) {}
+            // User may have entered blank string as avatarUrl, handle that
+            if (!stored.avatarUrl || typeof stored.avatarUrl !== "string" || !stored.avatarUrl.trim()) {
+                return "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
+            }
+            return stored.avatarUrl;
+        })();
 
         const avatarImg = document.createElement("img");
-        avatarImg.src = profile.avatarUrl || "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
+        avatarImg.src = avatarUrl;
         avatarImg.alt = "Avatar";
         avatarImg.style.cssText = `
             width: 90px;
@@ -435,13 +430,35 @@
             object-fit: cover;
         `;
 
-        // Add crossOrigin if external image (to allow CORS for html2canvas)
+        // Add crossOrigin if the image is not this origin (for CORS and also html2canvas) 
         try {
-            const urlObj = new URL(avatarImg.src);
+            const urlObj = new URL(avatarImg.src, location.href);
             if (urlObj.origin !== location.origin) {
                 avatarImg.crossOrigin = "anonymous";
             }
         } catch (e) {}
+
+        // Fallback: handle error loading the user avatar (show generated avatar if broken link)
+        avatarImg.onerror = function() {
+            if (avatarImg.src !== "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128") {
+                avatarImg.src = "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
+            }
+        };
+
+        function ensureAvatarImgLoaded(img) {
+            return new Promise((resolve) => {
+                if (img.complete && img.naturalWidth !== 0) {
+                    resolve();
+                } else {
+                    img.onload = resolve;
+                    img.onerror = () => {
+                        img.src = "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
+                        img.onload = resolve;
+                        img.onerror = resolve;
+                    };
+                }
+            });
+        }
 
         const detailStyle = `color:${colors.muted};font-size:1em;text-align:center;`;
 
@@ -497,18 +514,12 @@
             e.stopPropagation();
 
             loadHtml2Canvas().then((html2canvas) => {
-                // Ensure avatar is loaded before snapshot!
                 ensureAvatarImgLoaded(avatarImg).then(() => {
-                    // temporarily force image to decode if possible (for browsers that support)
                     if (avatarImg.decode) {
                         avatarImg.decode().catch(() => {});
                     }
-
                     const origBg = panel.style.background;
                     panel.style.background = "#191919";
-
-                    // html2canvas may miss external (cross-origin) images unless they are loaded+decoded with crossOrigin and CORS is allowed.
-
                     html2canvas(panel, {
                         backgroundColor: "#191919",
                         useCORS: true,
@@ -577,6 +588,7 @@
             document.removeEventListener("keydown", escListener);
         }
     }
+    // --------- END FIX ---------
 
     function injectPanelAnimationCss() {
         if (document.getElementById("profile-panel-style")) return;
