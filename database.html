@@ -40,6 +40,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
         .iframe-title {
             text-align: center;
@@ -113,8 +114,8 @@
             }
         }
     </style>
-
-<script src="lock.js"></script>
+    <script src="embed-lock.js"></script>
+    <script src="lock.js"></script>
 </head>
 <body>
     <div id="navbar-container"></div>
@@ -137,7 +138,9 @@
             <div class="iframe-container">
                 <div class="iframe-title">Strike System</div>
                 <a class="iframe-newtab-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScLj5_UAiDioR78MeHNSNpJnqDNzsov9NSnqm_3IFxnEgyKKA/viewform" target="_blank" rel="noopener noreferrer">Open in a new tab</a>
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScLj5_UAiDioR78MeHNSNpJnqDNzsov9NSnqm_3IFxnEgyKKA/viewform" allowfullscreen style="height: 680px;"></iframe>
+                <iframe 
+                    src="https://docs.google.com/forms/d/e/1FAIpQLScLj5_UAiDioR78MeHNSNpJnqDNzsov9NSnqm_3IFxnEgyKKA/viewform" 
+                    allowfullscreen style="height: 680px;"></iframe>
             </div>
             <div class="iframe-container">
                 <div class="iframe-title">Active Reports</div>
@@ -146,5 +149,18 @@
             </div>
         </section>
     </main>
+    <script>
+      window.addEventListener("DOMContentLoaded", function() {
+        const LEADER_PIN = "1738";
+        const coleadIframe = document.querySelector('.iframe-container:nth-of-type(1) iframe');
+        if (coleadIframe) {
+          EmbedLock.lockIframeContainer(coleadIframe.parentElement, LEADER_PIN);
+        }
+        const elderIframe = document.querySelector('.iframe-container:nth-of-type(2) iframe');
+        if (elderIframe) {
+          EmbedLock.lockIframeContainer(elderIframe.parentElement, LEADER_PIN);
+        }
+      });
+    </script>
 </body>
 </html>

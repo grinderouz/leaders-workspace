@@ -1,0 +1,186 @@
+:root {
+    --g-bg-main: #202124;
+    --g-bg-secondary: #292a2d;
+    --g-card-bg: #303134;
+    --g-navbar-bg: #171717;
+    --g-hover-bg: #35363a;
+    --g-active-bg: #3c4043;
+    --g-border: #44464a;
+    --g-primary: #8ab4f8;
+    --g-accent: #d4af37;
+    --g-text-main: #e8eaed;
+    --g-text-secondary: #9aa0a6;
+    --g-btn-bg: #303134;
+    --g-btn-hover: #3c4043;
+    --g-link: #8ab4f8;
+    --g-scrollbar-thumb: #5f6368;
+    --g-scrollbar-bg: #202124;
+}
+
+body {
+    background: var(--g-bg-main) !important;
+    color: var(--g-text-main) !important;
+}
+html {
+    background: var(--g-bg-main);
+}
+
+/* Navbar */
+#navbar-container,
+.navbar, nav, .navbar-header {
+    background: var(--g-navbar-bg) !important;
+    border-bottom: 1.5px solid var(--g-border) !important;
+    box-shadow: 0 2px 8px rgba(32,33,36,0.12);
+}
+
+#navbar-container * {
+    color: var(--g-text-main) !important;
+}
+
+/* Cards, containers, Divs */
+main, .container, .card, .iframe-container, section, .settings-group {
+    background: var(--g-card-bg) !important;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(32,33,36,0.12);
+    border: 1px solid var(--g-border);
+}
+
+.iframe-title {
+    color: var(--g-text-main) !important;
+    font-weight: 500;
+}
+hr, .db-divider {
+    border-top: 1.5px solid var(--g-border) !important;
+    opacity: 0.65 !important;
+    box-shadow: none !important;
+}
+
+a {
+    color: var(--g-link);
+    text-decoration: none;
+    transition: color 0.18s;
+}
+a:hover, a:focus {
+    color: var(--g-primary);
+    text-decoration: underline;
+}
+
+button, .button, input[type="button"], input[type="submit"] {
+    background: var(--g-btn-bg) !important;
+    color: var(--g-text-main) !important;
+    border: 1px solid var(--g-border) !important;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(60,64,67,0.12);
+    transition: background 0.18s, color 0.18s;
+}
+button:hover, .button:hover, input[type="button"]:hover, input[type="submit"]:hover,
+.iframe-newtab-btn:hover, .iframe-newtab-btn:focus {
+    background: var(--g-btn-hover) !important;
+    color: var(--g-primary) !important;
+    border-color: var(--g-primary) !important;
+    cursor: pointer;
+}
+
+.iframe-newtab-btn {
+    background: var(--g-btn-bg) !important;
+    color: var(--g-link) !important;
+    border-color: var(--g-border) !important;
+}
+
+/* Form Fields */
+input, textarea, select {
+    background: var(--g-card-bg) !important;
+    color: var(--g-text-main) !important;
+    border: 1px solid var(--g-border) !important;
+    border-radius: 6px;
+}
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--g-primary);
+    background: var(--g-active-bg) !important;
+}
+
+/* Tables */
+table {
+    background: var(--g-bg-secondary) !important;
+    color: var(--g-text-main);
+    border: 1px solid var(--g-border);
+}
+th, td {
+    border-color: var(--g-border);
+}
+tr:nth-child(even) {
+    background: var(--g-card-bg);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--g-text-main) !important;
+    font-weight: 500;
+}
+
+/* Secondary text */
+.secondary, .subtitle, .note, small, .time, .date, label {
+    color: var(--g-text-secondary) !important;
+}
+
+/* Scrollbars */
+body::-webkit-scrollbar, html::-webkit-scrollbar {
+    width: 14px;
+    background: var(--g-scrollbar-bg);
+}
+body::-webkit-scrollbar-thumb, html::-webkit-scrollbar-thumb {
+    background: var(--g-scrollbar-thumb);
+    border-radius: 7px;
+    border: 3px solid var(--g-scrollbar-bg);
+}
+body::-webkit-scrollbar-thumb:hover, html::-webkit-scrollbar-thumb:hover {
+    background: var(--g-primary);
+}
+body::-webkit-scrollbar-track, html::-webkit-scrollbar-track {
+    background: var(--g-scrollbar-bg);
+    border-radius: 8px;
+}
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--g-scrollbar-thumb) var(--g-scrollbar-bg);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Miscellaneous */
+::selection {
+    background: var(--g-primary);
+    color: #fff;
+}
+
+code, pre {
+    background: #292a2d !important;
+    color: #b7c8d6 !important;
+    border-radius: 4px;
+    padding: 2px 5px;
+    font-size: 95%;
+}
+
+/* For modal dialogs/alerts */
+.modal, .dialog, .alert, #lock-overlay {
+    background: var(--g-card-bg) !important;
+    color: var(--g-text-main) !important;
+    border: 1px solid var(--g-border);
+}
+
+/* Responsive tweaks */
+@media (max-width: 700px) {
+    main, .container, .card, section, .iframe-container, .settings-group {
+        border-radius: 0;
+        box-shadow: none;
+        border-width: 0;
+    }
+}
+
+/* Animations for Google-like touch */
+button, .button, .iframe-newtab-btn, input, textarea, select, a {
+    transition: background 0.15s cubic-bezier(.4,0,.2,1), color 0.18s cubic-bezier(.4,0,.2,1), border 0.15s cubic-bezier(.4,0,.2,1);
+}

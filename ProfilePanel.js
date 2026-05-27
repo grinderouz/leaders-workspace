@@ -38,13 +38,13 @@
         panel.style.setProperty("--profile-view-accent", colors.accent);
         panel.style.setProperty("--profile-view-text", colors.text);
         panel.style.setProperty("--profile-view-muted", colors.muted);
-        panel.querySelectorAll(".profile-view-accent").forEach(function (el) {
+        panel.querySelectorAll(".profile-view-accent").forEach(el => {
             el.style.color = colors.accent;
         });
-        panel.querySelectorAll(".profile-view-text").forEach(function (el) {
+        panel.querySelectorAll(".profile-view-text").forEach(el => {
             el.style.color = colors.text;
         });
-        panel.querySelectorAll(".profile-view-muted").forEach(function (el) {
+        panel.querySelectorAll(".profile-view-muted").forEach(el => {
             el.style.color = colors.muted;
         });
         const shareIcon = panel.querySelector(".profile-view-share-btn svg");
@@ -144,7 +144,6 @@
         if (!dateString) return null;
         let date;
         if (/^\d{4}-\d{2}-\d{2}/.test(dateString)) {
-            // old format: YYYY-MM-DD HH:mm:ss
             date = new Date(dateString.replace(" ", "T"));
         } else if (!isNaN(Date.parse(dateString))) {
             date = new Date(dateString);
@@ -175,8 +174,6 @@
         if (document.getElementById("profile-panel-overlay")) return;
 
         const stored = getStoredProfile();
-        const hasCreationDate = !!stored.creationDate;
-
         const overlay = document.createElement("div");
         overlay.id = "profile-panel-overlay";
         overlay.style.cssText = `
@@ -210,6 +207,7 @@
         title.style.cssText = "color: #d4af37; margin-bottom: 23px; font-size:1.3em; text-align:center;";
 
         const avatarPreview = document.createElement("img");
+        avatarPreview.crossOrigin = "anonymous";
         avatarPreview.src = stored.avatarUrl || "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
         avatarPreview.alt = "Avatar";
         avatarPreview.style.cssText = `
@@ -334,7 +332,6 @@
         roleSelect.value = (stored.role === "Elder" || stored.role === "Co-leader" || stored.role === "Clan Leader") ? stored.role : "";
 
         let leaderPincodeChecked = false;
-
         roleSelect.addEventListener('change', function () {
             if (roleSelect.value === 'Clan Leader' && !leaderPincodeChecked) {
                 setTimeout(function () {
@@ -362,17 +359,9 @@
             setCreationBtn.textContent = "Set Issue Date";
             setCreationBtn.type = "button";
             setCreationBtn.style.cssText = `
-                background: #5fbc32;
-                color: #fff;
-                border: none;
-                border-radius: 6px;
-                font-size: 1em;
-                padding: 7px 18px;
-                font-weight: bold;
-                margin-bottom: 13px;
-                cursor: pointer;
-                margin-top: -2px;
-                align-self: flex-end;
+                background:rgb(188, 167, 50); color: black; border: none; border-radius: 6px;
+                font-size: 1em; padding: 7px 18px; font-weight: bold;
+                margin-bottom: 13px; cursor: pointer; margin-top: -2px; align-self: flex-end;
             `;
             setCreationBtn.onclick = function () {
                 if (creationDatePanelDiv || getCreationDate()) {
@@ -400,7 +389,6 @@
                 creationDatePanelDiv.textContent = "Account Creation Date: " + formatCreationDate(isoString);
                 setCreationBtn.parentNode.insertBefore(creationDatePanelDiv, setCreationBtn.nextSibling);
             };
-
             panel.appendChild(setCreationBtn);
         }
         if (creationDatePanelDiv) {
@@ -413,9 +401,8 @@
         const saveBtn = document.createElement("button");
         saveBtn.textContent = "Save";
         saveBtn.style.cssText = `
-            background: #d4af37; color: #232323;
-            border: none; border-radius: 6px; font-weight:bold;
-            padding: 10px 22px; font-size:1em;
+            background: #d4af37; color: #232323; border: none; border-radius: 6px;
+            font-weight:bold; padding: 10px 22px; font-size:1em;
             cursor:pointer; transition:background 0.18s;
         `;
         saveBtn.onclick = function () {
@@ -449,10 +436,8 @@
         const closeBtn = document.createElement("button");
         closeBtn.textContent = "Close";
         closeBtn.style.cssText = `
-            background: #333; color: #fff;
-            border: none; border-radius: 6px;
-            padding: 10px 18px; font-size:1em;
-            cursor:pointer; transition:background 0.16s;
+            background: #333; color: #fff; border: none; border-radius: 6px;
+            padding: 10px 18px; font-size:1em; cursor:pointer; transition:background 0.16s;
         `;
         closeBtn.onclick = closeProfilePanel;
 
@@ -477,12 +462,10 @@
         overlay.onclick = function(e) {
             if (e.target === overlay) closeProfilePanel();
         };
-
         function escListener(evt) {
             if (evt.key === "Escape") closeProfilePanel();
         }
         document.addEventListener("keydown", escListener);
-
         overlay.appendChild(panel);
         document.body.appendChild(overlay);
 
@@ -495,7 +478,6 @@
     function openViewProfilePanel() {
         if (document.getElementById("view-profile-overlay")) return;
         const profile = getStoredProfile();
-
         let profileColors = getThemeProfileColors();
 
         const overlay = document.createElement("div");
@@ -510,29 +492,20 @@
         const panel = document.createElement("div");
         panel.className = "view-profile-modal";
         panel.style.cssText = `
-            background: ${VIEW_PROFILE_BG};
-            border-radius: 17px;
-            padding: 38px 36px 28px 36px;
-            min-width: 330px;
-            max-width: 96vw;
-            box-shadow: 0 6px 44px #000C;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
+            background: ${VIEW_PROFILE_BG}; border-radius: 17px;
+            padding: 38px 36px 28px 36px; min-width: 330px; max-width: 96vw;
+            box-shadow: 0 6px 44px #000C; display: flex; flex-direction: column;
+            align-items: center; position: relative;
         `;
         applyViewProfileColors(panel, profileColors);
 
         const avatarImg = document.createElement("img");
+        avatarImg.crossOrigin = "anonymous";
         avatarImg.src = profile.avatarUrl || "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
         avatarImg.alt = "Avatar";
         avatarImg.style.cssText = `
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            background: #232323;
-            margin-bottom: 16px;
-            object-fit: cover;
+            width: 90px; height: 90px; border-radius: 50%;
+            background: #232323; margin-bottom: 16px; object-fit: cover;
         `;
 
         const nameEl = document.createElement("div");
@@ -592,23 +565,20 @@
             creationDateViewDiv.className = "profile-view-text";
             creationDateViewDiv.textContent = "Issue Date: " + formatCreationDate(profile.creationDate);
             creationDateViewDiv.style.cssText = fieldStyle + "margin-bottom:8px;";
-            panel.appendChild(creationDateViewDiv);
+        } else {
+            creationDateViewDiv.className = "profile-view-muted";
+            creationDateViewDiv.textContent = "Set Issue Date in Profile";
+            creationDateViewDiv.style.cssText = fieldStyle + "margin-bottom:8px;font-style:italic;opacity:0.83;";
         }
+        panel.appendChild(creationDateViewDiv);
 
         const shareBtn = document.createElement("button");
         shareBtn.className = "profile-view-share-btn";
         shareBtn.title = "Download image to share!";
         shareBtn.style.cssText = `
-            position: absolute;
-            top: 13px;
-            right: 16px;
-            background: none;
-            border: none;
-            padding: 3px 3px 1px 3px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: background 0.12s;
-            z-index: 2;
+            position: absolute; top: 13px; right: 16px; background: none; border: none;
+            padding: 3px 3px 1px 3px; border-radius: 50%; cursor: pointer;
+            transition: background 0.12s; z-index: 2;
         `;
         shareBtn.onmouseenter = () => { shareBtn.style.background = "#fafafd"; };
         shareBtn.onmouseleave = () => { shareBtn.style.background = "none"; };
@@ -618,13 +588,28 @@
             e.preventDefault();
             e.stopPropagation();
 
-            // Find the close button in this panel and change its text content before image download
             const closeBtn = panel.querySelector("button:not(.profile-view-share-btn)");
             let originalCloseText = null;
             if (closeBtn) {
                 originalCloseText = closeBtn.textContent;
                 closeBtn.textContent = "GRINDEROUZ CARD";
             }
+
+            let blurred = false;
+            let originalEmailFilter = "";
+            let originalEmailTransition = "";
+            if (profile.email) {
+                originalEmailFilter = emailEl.style.filter || "";
+                originalEmailTransition = emailEl.style.transition || "";
+                emailEl.style.transition = "filter 0.09s";
+                emailEl.style.filter = "blur(7px)";
+                emailEl.setAttribute("data-should-blur", "true");
+                blurred = true;
+            }
+
+            const emailTextColor = window.getComputedStyle(emailEl).color || "#ffffff";
+
+            shareBtn.style.display = "none";
 
             loadHtml2Canvas().then((html2canvas) => {
                 const origBg = panel.style.background;
@@ -633,32 +618,87 @@
                     backgroundColor: VIEW_PROFILE_BG,
                     useCORS: true,
                     logging: false,
-                    scale: 2
+                    scale: 2,
+                    onclone: function (clonedDoc) {
+                        // Remove the share/download button from the clone
+                        const shareBtnClone = clonedDoc.querySelector(".profile-view-share-btn");
+                        if (shareBtnClone && shareBtnClone.parentNode) {
+                            shareBtnClone.parentNode.removeChild(shareBtnClone);
+                        }
+                        const clonedEmail = clonedDoc.querySelector('[data-should-blur="true"]');
+                        if (clonedEmail) {
+                            try {
+                                const text = clonedEmail.textContent || "";
+                                const computedStyle = window.getComputedStyle(emailEl);
+                                const fontSize = computedStyle.fontSize || "14px";
+                                const fontFamily = computedStyle.fontFamily || "sans-serif";
+                                const fontWeight = computedStyle.fontWeight || "normal";
+                                const fontString = `${fontWeight} ${fontSize} ${fontFamily}`;
+                                const canvas = clonedDoc.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+                                ctx.font = fontString;
+                                const metrics = ctx.measureText(text);
+                                const textWidth = Math.ceil(metrics.width) || 120;
+                                const textHeight = parseInt(fontSize, 10) || 16;
+                                const padding = 10;
+                                canvas.width = textWidth + (padding * 2);
+                                canvas.height = textHeight + (padding * 2);
+                                ctx.font = fontString;
+                                ctx.fillStyle = emailTextColor;
+                                ctx.textBaseline = 'top';
+                                ctx.filter = 'blur(4px)';
+                                ctx.fillText(text, padding, padding);
+                                clonedEmail.style.position = 'relative';
+                                clonedEmail.style.color = 'transparent';
+                                clonedEmail.style.filter = 'none';
+                                canvas.style.position = 'absolute';
+                                canvas.style.left = `-${padding}px`;
+                                canvas.style.top = `-${padding}px`;
+                                canvas.style.width = `${canvas.width}px`;
+                                canvas.style.height = `${canvas.height}px`;
+                                canvas.style.display = 'block';
+                                clonedEmail.appendChild(canvas);
+                            } catch (err) {
+                                // silent
+                            }
+                        }
+                    }
                 }).then(canvas => {
                     panel.style.background = origBg;
                     canvas.toBlob(function(blob) {
                         if (!blob) return;
                         const link = document.createElement('a');
                         link.href = URL.createObjectURL(blob);
-                        link.download = `${(profile.nickname || "profile")}_card.png`;
+                        link.download = `grinderouz_card.png`;
                         document.body.appendChild(link);
                         link.click();
                         document.body.removeChild(link);
                         setTimeout(() => { URL.revokeObjectURL(link.href); }, 200);
                     }, 'image/png');
-                }).catch(()=>{
+                }).catch(() => {
                     panel.style.background = origBg;
                     alert("Sorry! Could not generate image.");
                 }).finally(() => {
-                    // Restore original close button text after download action
                     if (closeBtn && originalCloseText !== null) {
                         closeBtn.textContent = originalCloseText;
                     }
+                    if (blurred) {
+                        emailEl.style.transition = originalEmailTransition;
+                        emailEl.style.filter = originalEmailFilter;
+                        emailEl.removeAttribute("data-should-blur");
+                    }
+                    shareBtn.style.display = "";
                 });
             }).catch(() => {
                 if (closeBtn && originalCloseText !== null) {
                     closeBtn.textContent = originalCloseText;
                 }
+                if (blurred) {
+                    emailEl.style.transition = originalEmailTransition;
+                    emailEl.style.filter = originalEmailFilter;
+                    emailEl.removeAttribute("data-should-blur");
+                }
+                shareBtn.style.display = "";
                 alert("Image sharing functionality failed to load. Please try again.");
             });
         };
@@ -666,16 +706,9 @@
         const closeBtn = document.createElement("button");
         closeBtn.textContent = "Close";
         closeBtn.style.cssText = `
-            background:#d4af37;
-            color:#191919;
-            border:none;
-            border-radius:7px;
-            padding:10px 22px;
-            font-size:1em;
-            font-weight:bold;
-            margin-top:8px;
-            cursor:pointer;
-            transition:background 0.17s;
+            background:#d4af37; color:#191919; border:none; border-radius:7px;
+            padding:10px 22px; font-size:1em; font-weight:bold; margin-top:8px;
+            cursor:pointer; transition:background 0.17s;
         `;
         closeBtn.onclick = closePanel;
 
@@ -685,8 +718,8 @@
         panel.appendChild(avatarImg);
         panel.appendChild(nameEl);
         panel.appendChild(clanEl);
-        panel.appendChild(discordEl);
-        panel.appendChild(emailEl);
+        if (discordEl) panel.appendChild(discordEl);
+        if (emailEl) panel.appendChild(emailEl);
         panel.appendChild(roleEl);
         panel.appendChild(closeBtn);
         applyViewProfileColors(panel, profileColors);
@@ -734,41 +767,25 @@
         const style = document.createElement("style");
         style.id = "profile-panel-theme-style";
         style.textContent = `
-            .view-profile-modal,
-            .profile-panel-modal,
+            .view-profile-modal, .profile-panel-modal,
             html:not([data-theme]) #profile-panel-overlay > div,
             html.theme-default #profile-panel-overlay > div,
             html.theme-default .profile-panel-modal {
-                background: #232323 !important;
-                color: #fff !important;
+                background: #232323 !important; color: #fff !important;
             }
             html:not([data-theme]) #profile-panel-overlay input,
             html:not([data-theme]) #profile-panel-overlay select,
             html.theme-default #profile-panel-overlay input,
             html.theme-default #profile-panel-overlay select {
-                background: #2a2a2a !important;
-                color: #fff !important;
-                border-color: #bab07c !important;
+                background: #2a2a2a !important; color: #fff !important; border-color: #bab07c !important;
             }
-            .view-profile-modal .profile-view-accent {
-                color: var(--profile-view-accent, #d4af37);
-            }
-            .view-profile-modal .profile-view-text {
-                color: var(--profile-view-text, #fff);
-            }
-            .view-profile-modal .profile-view-muted {
-                color: var(--profile-view-muted, #b48808);
-            }
-            .profile-panel-modal label,
-            .profile-panel-modal h2 {
-                color: #b48808 !important;
-            }
-            .profile-panel-modal input, .profile-panel-modal select {
-                border: 1px solid #bab07c;
-            }
+            .view-profile-modal .profile-view-accent { color: var(--profile-view-accent, #d4af37); }
+            .view-profile-modal .profile-view-text { color: var(--profile-view-text, #fff); }
+            .view-profile-modal .profile-view-muted { color: var(--profile-view-muted, #b48808); }
+            .profile-panel-modal label, .profile-panel-modal h2 { color: #b48808 !important; }
+            .profile-panel-modal input, .profile-panel-modal select { border: 1px solid #bab07c; }
             .profile-panel-modal input:focus, .profile-panel-modal select:focus {
-                border-color: #d4af37 !important;
-                outline: none !important;
+                border-color: #d4af37 !important; outline: none !important;
             }
         `;
         document.head.appendChild(style);
