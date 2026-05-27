@@ -4,8 +4,7 @@
         { id: "light", name: "Light", description: "Bright, clean layout for daytime use.", file: "themes/light.css" },
         { id: "purple-nitro", name: "Purple Nitro", description: "Purple and cyan Nitro style.", file: "themes/purple-nitro.css" },
         { id: "coc", name: "CoC", description: "CoC Green Theme.", file: "themes/coc.css" },
-        { id: "moogle", name: "Moogle Dark", description: "Moogle Dark UI Theme.", file: "themes/moogle.css" },
-        { id: "dios", name: "DIOS", description: "Dark Phone Theme.", file: "themes/dark-ios.css" }
+        { id: "moogle", name: "Moogle Dark", description: "Moogle Dark UI Theme.", file: "themes/moogle.css" }
     ];
 
     const STORAGE_KEY = "glw_theme";
