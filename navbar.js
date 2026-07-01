@@ -66,9 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <nav class="navbar-links" id="navbar-links">
                     <a href="index.html" class="nav-link">Rules & Ranks</a>
                     <a href="faq.html" class="nav-link">PlayBook FAQ</a>
-                    <a href="database.html" class="nav-link">Google Forms</a>
+                    <a href="database.html" class="nav-link">Records</a>
                     <a href="themes.html" class="nav-link">Appearance</a>
-                    <a href="settings.html" class="nav-link">App Settings</a>
+                    <a href="settings.html" class="nav-link">Settings</a>
                 </nav>
             </header>
             <style>

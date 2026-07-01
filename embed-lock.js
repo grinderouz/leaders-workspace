@@ -62,7 +62,7 @@ const EmbedLock = (function () {
             text-align: center;
         }
         .embed-lock-view-btn {
-            display: inline-block;
+            display: block;
             margin: 2.5em auto 1.2em auto;
             background: #d4af37;
             color: #232323;
@@ -74,6 +74,7 @@ const EmbedLock = (function () {
             cursor: pointer;
             transition: background 0.18s;
             box-shadow: 0 2.5px 14px #0004, 0 1px 2px #0005;
+            text-align: center;
         }
         .embed-lock-view-btn:active {
             background: #b89829;
@@ -116,12 +117,12 @@ const EmbedLock = (function () {
 
         viewLockedBtn = document.createElement('button');
         viewLockedBtn.className = 'embed-lock-view-btn';
-        viewLockedBtn.textContent = "View Locked";
+        viewLockedBtn.textContent = "Unlock With Pin";
         viewLockedBtn.onclick = function () {
             showUnlockPrompt(secretPin);
         };
 
-        // Insert the button at the top of main content, or body as fallback
+        // Create a wrapper for centering, or rely on block+auto margin (block+auto centers in most flows)
         let parent = document.querySelector('main') || document.body;
         parent.insertBefore(viewLockedBtn, parent.firstChild);
     }

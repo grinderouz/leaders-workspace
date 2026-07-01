@@ -86,7 +86,7 @@
 
         const btn = document.createElement("button");
         btn.id = "profile-btn-panel";
-        btn.textContent = "Profile";
+        btn.textContent = "LA Settings";
         btn.type = "button";
         btn.style.cssText = `
             background: #272727;
@@ -108,7 +108,7 @@
 
         const viewBtn = document.createElement("button");
         viewBtn.id = "view-profile-btn-panel";
-        viewBtn.textContent = "View Profile";
+        viewBtn.textContent = "Local Account";
         viewBtn.type = "button";
         viewBtn.style.cssText = `
             background: #191919;
@@ -179,6 +179,8 @@
         overlay.style.cssText = `
             position:fixed;inset:0;z-index:12010;
             background:rgba(0,0,0,0.66);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
             display:flex;align-items:center;justify-content:center;
             animation:profilePanelFadeIn 0.14s;
         `;
@@ -199,11 +201,12 @@
             align-items: stretch;
             position: relative;
         `;
+   
         panel.style.setProperty("--profile-panel-input-bg", "#2a2a2a");
         panel.style.setProperty("--profile-panel-input-color", "#fff");
 
         const title = document.createElement("h2");
-        title.textContent = "Profile Settings";
+        title.textContent = "Local Account Settings";
         title.style.cssText = "color: #d4af37; margin-bottom: 23px; font-size:1.3em; text-align:center;";
 
         const avatarPreview = document.createElement("img");
@@ -332,7 +335,9 @@
         roleSelect.value = (stored.role === "Elder" || stored.role === "Co-leader" || stored.role === "Clan Leader") ? stored.role : "";
 
         let leaderPincodeChecked = false;
+        let coleaderPincodeChecked = false;
         roleSelect.addEventListener('change', function () {
+            // Handle Clan Leader with pin
             if (roleSelect.value === 'Clan Leader' && !leaderPincodeChecked) {
                 setTimeout(function () {
                     let pin = prompt('Enter Clan Leader Passcode:');
@@ -341,6 +346,18 @@
                         alert("Incorrect pin code. Cannot select Clan Leader role.");
                     } else {
                         leaderPincodeChecked = true;
+                    }
+                }, 0);
+            }
+            // Handle Co-leader with the same pin logic
+            if (roleSelect.value === 'Co-leader' && !coleaderPincodeChecked) {
+                setTimeout(function () {
+                    let pin = prompt('Enter Co-leader Passcode:');
+                    if (pin !== '1738') {
+                        roleSelect.value = "";
+                        alert("Incorrect pin code. Cannot select Co-leader role.");
+                    } else {
+                        coleaderPincodeChecked = true;
                     }
                 }, 0);
             }
@@ -356,7 +373,7 @@
             creationDatePanelDiv.textContent = "Account Creation Date: " + formatCreationDate(creationDate);
         } else {
             const setCreationBtn = document.createElement("button");
-            setCreationBtn.textContent = "Set Issue Date";
+            setCreationBtn.textContent = "Set Card Issue Date - Show Your dedication!";
             setCreationBtn.type = "button";
             setCreationBtn.style.cssText = `
                 background:rgb(188, 167, 50); color: black; border: none; border-radius: 6px;
@@ -399,7 +416,7 @@
         btnRow.style.cssText = "display:flex;justify-content:flex-end;gap:10px;";
 
         const saveBtn = document.createElement("button");
-        saveBtn.textContent = "Save";
+        saveBtn.textContent = "Save Changes";
         saveBtn.style.cssText = `
             background: #d4af37; color: #232323; border: none; border-radius: 6px;
             font-weight:bold; padding: 10px 22px; font-size:1em;
@@ -411,10 +428,19 @@
                 avatarVal = "https://ui-avatars.com/api/?name=User&background=2d2d2d&color=d4af37&size=128";
             }
             const selRole = roleSelect.value;
+            // Check pin for Clan Leader
             if (selRole === "Clan Leader" && !leaderPincodeChecked) {
                 let pin = prompt('Enter Clan Leader Passcode:');
                 if (pin !== '1738') {
                     alert("Incorrect pin code. Cannot save as Clan Leader role.");
+                    return;
+                }
+            }
+            // Check pin for Co-leader
+            if (selRole === "Co-leader" && !coleaderPincodeChecked) {
+                let pin = prompt('Enter Co-leader Passcode:');
+                if (pin !== '1738') {
+                    alert("Incorrect pin code. Cannot save as Co-leader role.");
                     return;
                 }
             }
@@ -434,7 +460,7 @@
         };
 
         const closeBtn = document.createElement("button");
-        closeBtn.textContent = "Close";
+        closeBtn.textContent = "Cancel Changes";
         closeBtn.style.cssText = `
             background: #333; color: #fff; border: none; border-radius: 6px;
             padding: 10px 18px; font-size:1em; cursor:pointer; transition:background 0.16s;
@@ -567,7 +593,7 @@
             creationDateViewDiv.style.cssText = fieldStyle + "margin-bottom:8px;";
         } else {
             creationDateViewDiv.className = "profile-view-muted";
-            creationDateViewDiv.textContent = "Set Issue Date in Profile";
+            creationDateViewDiv.textContent = "Set Issue Date in Profile Panel";
             creationDateViewDiv.style.cssText = fieldStyle + "margin-bottom:8px;font-style:italic;opacity:0.83;";
         }
         panel.appendChild(creationDateViewDiv);
@@ -704,7 +730,7 @@
         };
 
         const closeBtn = document.createElement("button");
-        closeBtn.textContent = "Close";
+        closeBtn.textContent = "Back to Website";
         closeBtn.style.cssText = `
             background:#d4af37; color:#191919; border:none; border-radius:7px;
             padding:10px 22px; font-size:1em; font-weight:bold; margin-top:8px;
@@ -773,6 +799,12 @@
             html.theme-default .profile-panel-modal {
                 background: #232323 !important; color: #fff !important;
             }
+            /* Blurred overlay for viewing profile */
+            #view-profile-overlay {
+                background: rgba(0,0,0,0.77) !important;
+                backdrop-filter: blur(7px) !important;
+                -webkit-backdrop-filter: blur(7px) !important;
+            }
             html:not([data-theme]) #profile-panel-overlay input,
             html:not([data-theme]) #profile-panel-overlay select,
             html.theme-default #profile-panel-overlay input,
@@ -788,6 +820,7 @@
                 border-color: #d4af37 !important; outline: none !important;
             }
         `;
+  
         document.head.appendChild(style);
     }
 

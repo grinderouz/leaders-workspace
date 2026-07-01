@@ -1,3 +1,7 @@
+V1.4.3 July 1, 2026
+-----------------------------
+Minor Improvements, Removed some Themes, Bug Fixes, Layout Fixes,
+
 V1.3.2 May 27, 2026
 -----------------------------
 Removed Crimson Red Theme, Added New Lines to the Playbook, Blur to Email in Profile Card, Profile Picture Fixes to Card, Removed Download button from saved card image,
