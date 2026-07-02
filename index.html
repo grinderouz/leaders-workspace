@@ -4,12 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#d4af37">
-    <title>Grinderouz Leaders Workspace - Rules</title>
+    <title>GLW - Dashboard</title>
     <link rel="icon" type="image/png" href="assets/navicon.png">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="styles.css">
-    <script src="scripts/theme.js"></script>
     <style>
+        body {
+            background: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+        }
+        a {
+            color: #ffa500;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #fff;
+        }
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        section {
+            max-width: 720px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .card {
+            background: #2a2a2a;
+            padding: 18px 22px;
+            margin: 20px 0;
+            border-left: 5px solid #d4af37;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        details {
+            background: #2a2a2a;
+            padding: 13px 18px;
+            margin: 16px 0;
+            border-radius: 6px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        @media (max-width: 1000px) {
+            main,
+            section {
+                max-width: 98vw;
+                padding-left: 2vw;
+                padding-right: 2vw;
+            }
+            .card,
+            details {
+                padding-left: 4vw;
+                padding-right: 4vw;
+            }
+        }
+        @media (max-width: 600px) {
+            main,
+            section {
+                max-width: 100vw;
+                padding-left: 2vw;
+                padding-right: 2vw;
+            }
+            .card,
+            details {
+                padding: 10px 8px;
+                font-size: 0.96em;
+            }
+            body {
+                font-size: 15px;
+            }
+        }
+        @media (max-width: 400px) {
+            .card,
+            details {
+                padding: 7px 2px;
+                font-size: 0.91em;
+            }
+        }
         html,
         body {
             max-width: 100vw;
@@ -51,7 +132,7 @@
         .banner-header {
             width: 100%;
             min-height: 190px;
-            background: url('https://github.com/grinderouz/clan/blob/main/icon-directory/banners/may-2026/web-banner.png?raw=true') center center/cover no-repeat, #191919;
+            background: url('assets/banner.png') center center/cover no-repeat, #191919;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -88,17 +169,16 @@
             letter-spacing: 1px;
         }
     </style>
-    <script src="lock.js"></script>
-    <script src="ProfilePanel.js"></script>
+    <script src="scripts/lock.js"></script>
 </head>
 <body>
     <div id="navbar-container"></div>
-    <script src="navbar.js"></script>
+    <script src="scripts/navbar.js"></script>
     <main>
-        <h2 style="color:rgb(0, 119, 255); text-align: center;">WORKSPACE UPDATED JUNE 1ST 2026!</h2>
+        <h2 style="color:rgb(0, 119, 255); text-align: center;">WORKSPACE UPDATED JUNE 2ND 2026! CHECK MESSAGES TAB</h2>
         <div class="banner-header">
             <div class="banner-header-inner">
-                <img src="assets/navicon.png" alt="Grinderouz Icon" />
+                <img src="assets/navicon.png" alt="Grinderouz Icon">
                 <h1>GLW - Leaders Workspace</h1>
                 <span>Rules & Resources for Clan Management</span>
             </div>
@@ -121,8 +201,9 @@
         </section>
         <h2>Welcome to the Leaders Workspace!</h2>
         <p>
-            Here you can read the <a href="faq.html">Clan PlayBook</a> if you're new to the team. You can browse the <a href="database.html">Forms Database</a> for viewing the GLW Strike System and also the Elder & Co Leader Applications.
-            <br><br> If you've just opened the GLW for the first time. Click the Profile button at the bottom right and set your issue date and setup your account! the sooner the better! Data is private and local so it doesnt have to be accurate and the DataBase is Google Tied
+            Here you can read the <a href="faq.html">Clan PlayBook</a> if you're new to the team. You can browse the <a href="management.html">Forms Database</a> for viewing the GLW Strike System and also the Elder &amp; Co Leader Applications.
+            <br><br>
+            If you've just opened the GLW for the first time, explore the PlayBook and Records pages. This workspace keeps your data local and secure while you manage clan forms and strike logs.
         </p>
         <section id="rules">
             <h2>Rules & Ranks</h2>
@@ -130,7 +211,7 @@
                 <h3>BOTH ROLES</h3>
                 <strong>Strike Log Rules</strong>
                 <p>
-                    When issuing a warning or strike, submit a <a href="database.html">Strike Log Form</a>. This is for missed war attacks and related issues (not inactivity kicks). If the user is in Discord, you may give a strike log and ping warning—keep it fair for everyone. Blacklisting is available if needed.
+                    When issuing a warning or strike, submit a <a href="management.html">Strike Log Form</a>. This is for missed war attacks and related issues (not inactivity kicks). If the user is in Discord, you may give a strike log and ping warning&mdash;keep it fair for everyone. Blacklisting is available if needed.
                 </p>
                 <strong>LOA - Leave of Absence</strong>
                 <p>

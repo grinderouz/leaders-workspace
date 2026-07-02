@@ -4,12 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#d4af37">
-    <title>Grinderouz Leaders Workspace - Crisis FAQ</title>
+    <title>GLW - PlayBook FAQ</title>
     <link rel="icon" type="image/png" href="assets/navicon.png">
     <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="styles.css">
-    <script src="scripts/theme.js"></script>
     <style>
+        body {
+            background: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+        }
+        a {
+            color: #ffa500;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #fff;
+        }
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        section {
+            max-width: 720px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .card {
+            background: #2a2a2a;
+            padding: 18px 22px;
+            margin: 20px 0;
+            border-left: 5px solid #d4af37;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        details {
+            background: #2a2a2a;
+            padding: 13px 18px;
+            margin: 16px 0;
+            border-radius: 6px;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+        @media (max-width: 1000px) {
+            main,
+            section {
+                max-width: 98vw;
+                padding-left: 2vw;
+                padding-right: 2vw;
+            }
+            .card,
+            details {
+                padding-left: 4vw;
+                padding-right: 4vw;
+            }
+        }
+        @media (max-width: 600px) {
+            main,
+            section {
+                max-width: 100vw;
+                padding-left: 2vw;
+                padding-right: 2vw;
+            }
+            .card,
+            details {
+                padding: 10px 8px;
+                font-size: 0.96em;
+            }
+            body {
+                font-size: 15px;
+            }
+        }
+        @media (max-width: 400px) {
+            .card,
+            details {
+                padding: 7px 2px;
+                font-size: 0.91em;
+            }
+        }
         html,
         body {
             max-width: 100vw;
@@ -42,11 +123,11 @@
             box-sizing: border-box;
         }
     </style>
-    <script src="lock.js"></script>
+    <script src="scripts/lock.js"></script>
 </head>
 <body>
     <div id="navbar-container"></div>
-    <script src="navbar.js"></script>
+    <script src="scripts/navbar.js"></script>
     <main>
         <section id="faq">
             <h2>Crisis Playbook (FAQ)</h2>
@@ -67,14 +148,32 @@
             <details>
                 <summary>Coleader Promoting Elder</summary>
                 <p>
-                    If you're a Coleader accepting a Elder Application, Unlike the other rules this one is very strict and important that you put the users username in the Discord Recruits.
-                    Also you need to make sure the Member is in our discord. And once the Clan Leader accepts it the member will be provided with assistance. <a href="database.html">View Application Forms Here</a>
+                    If you're a Coleader accepting an Elder Application, unlike the other rules this one is very strict and it's important that you put the user's username in the Discord Recruits.
+                    Also, you need to make sure the member is in our Discord. Once the Clan Leader accepts it, the member will be provided with assistance. <a href="database.html">View Application Forms Here</a>
                 </p>
             </details>
             <details>
                 <summary>Coleader starting Polls</summary>
                 <p>
-                    Polls are very easy to start you can start them at any time for whatever you want wether a new clan logo etc. Use /poll in the Leader Commands in the discord.
+                    Polls are very easy to start; you can create them at any time for any reason (e.g., a new clan logo). Use <code>/poll</code> in the Leader Commands in Discord.
+                </p>
+            </details>
+            <details>
+                <summary>Coleader Changing Clan Rules</summary>
+                <p>
+                    Coleaders are allowed to change the clan rules, but they must discuss it with other leaders before doing so. Changing rules without discussion will result in a warning.
+                </p>
+            </details>
+            <details>
+                <summary>What use is the Messages in the GLW?</summary>
+                <p>
+                    These messages are very important, as they only get sent out if something major is happening. Always check messages in the app if there is an exclamation point next to "Messages" on the navigation bar. They are useful and will not be spammed.
+                </p>
+            </details>
+            <details>
+                <summary>What is the Strike System?</summary>
+                <p>
+                    Wether you choose to use it or not. We have it there. Our very own strike system where you can fill out a strike form. Choose to blacklist warn wtv to a player in the clan. and always keep it there or record! However this is optional most Elders dont use it because they havent discovered it or bc it's useless maybe?
                 </p>
             </details>
             <details>

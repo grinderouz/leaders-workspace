@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#d4af37">
+    <title>GLW - Messages</title>
+    <link rel="icon" type="image/png" href="assets/navicon.png">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+        }
+        a {
+            color: #ffa500;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #fff;
+        }
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        section {
+            max-width: 720px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .card {
+            background: #2a2a2a;
+            padding: 18px 22px;
+            margin: 20px 0;
+            border-left: 5px solid #378dd4;
+            border-radius: 6px;
+            box-sizing: border-box;
+            position: relative;
+            transition: opacity 0.2s, border-color 0.2s;
+        }
+        .card.read {
+            border-left-color: #555;
+            opacity: 0.75;
+        }
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+            gap: 8px;
+        }
+        .message-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .message-title {
+            margin: 0;
+            font-size: 1.25em;
+            color: #3788d4;
+        }
+        .card.read .message-title {
+            color: #bbb;
+        }
+        .unread-indicator {
+            background: #ff3333;
+            color: white;
+            font-size: 0.75em;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .message-date {
+            font-size: 0.85em;
+            color: #aaa;
+        }
+        .message-description {
+            margin: 12px 0;
+            line-height: 1.5;
+            color: #eee;
+            white-space: pre-line;
+            word-break: break-word;
+        }
+        .screenshot-container {
+            margin: 15px 0;
+            max-width: 100%;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #444;
+            background: #151515;
+        }
+        .screenshot-img {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+        }
+        .message-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: flex-end;
+        }
+        .btn {
+            padding: 6px 14px;
+            font-size: 0.88em;
+            font-weight: bold;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s;
+        }
+        .btn-action {
+            background: #3a3a3a;
+            color: #ffffff;
+            border: 1px solid #555;
+        }
+        .btn-action:hover {
+            background: #3788d4;
+            color: #ffffff;
+        }
+        .btn-delete {
+            background: #3a3a3a;
+            color: #ff6b6b;
+            border: 1px solid #632d2d;
+        }
+        .btn-delete:hover {
+            background: #ff3333;
+            color: #fff;
+        }
+        .btn-reset {
+            background: transparent;
+            color: #aaa;
+            border: 1px dashed #555;
+            margin-top: 30px;
+            width: 100%;
+            padding: 10px;
+        }
+        .btn-reset:hover {
+            border-color: #3788d4;
+            color: #3788d4;
+        }
+        .nav-badge {
+            color: #ff3333;
+            font-weight: bold;
+            margin-left: 2px;
+            animation: pulse 1.5s infinite alternate;
+        }
+        @keyframes pulse {
+            from { opacity: 0.6; }
+            to { opacity: 1; }
+        }
+        @media (max-width: 1000px) {
+            main, section {
+                max-width: 98vw;
+                padding-left: 2vw;
+                padding-right: 2vw;
+            }
+            .card {
+                padding-left: 4vw;
+                padding-right: 4vw;
+            }
+        }
+        @media (max-width: 600px) {
+            main, section {
+                max-width: 100vw;
+                padding-left: 2vw;
+                padding-right: 2vw;
+            }
+            .card {
+                padding: 12px 10px;
+                font-size: 0.96em;
+            }
+            body {
+                font-size: 15px;
+            }
+            .message-header {
+                flex-direction: column;
+                gap: 4px;
+            }
+        }
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+        body::-webkit-scrollbar {
+            width: 14px;
+            background: #191919;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 7px;
+            border: 3px solid #191919;
+        }
+        body::-webkit-scrollbar-thumb:hover {
+            background: #b89a2b;
+        }
+        body::-webkit-scrollbar-track {
+            background: #191919;
+            border-radius: 8px;
+        }
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #d4af37 #191919;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+    </style>
+    <script src="scripts/lock.js"></script>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="scripts/navbar.js"></script>
+    <main>
+        <section id="mail-system">
+            <h2>MESSAGES</h2>
+            <p style="color: #aaa; margin-bottom: 25px;">Stay up to date and get immediate alerts direct from Clan Leadership.</p>
+            <div id="messages-list"></div>
+            <button id="reset-btn" class="btn btn-reset" style="display: none;">Restore Deleted Messages</button>
+        </section>
+    </main>
+    <script>
+        const MESSAGES_DATA = [
+            {
+                id: "msg_001",
+                title: "Welcome to the Workspace V1.5.4",
+                description: `Welcome to the <b>Brand New Leaders Workspace Layout Redesign!</b>
+This new layout is built to be the stronger leaders workspace we need.
+<b>Removing useless clutter and adding new powerful features!</b>
+This is just the start.
+
+But before we go over the updates let's talk about what we sadly removed.
+
+<b>1. We removed Themes.</b> Their is no longer any in app themes as it makes updating the website code very complicated. <b>This will make updates faster and assure nothing is buggy.</b>
+2. We <b>removed the entire local profile system.</b> This ones a bummer because of the profile cards. But it does speed things up.
+
+If it really bothers you let me know in the discord and ill add it back in the future the same way it was removed.
+
+We've added some minor bug fixes, and lastly.
+Theirs a new mailbox system to keep you updated with everything happening!
+also check the playbook as it does get updated!`,
+                screenshot: "assets/banner.png",
+                date: "June 2, 2026"
+            },
+            {
+                id: "msg_002",
+                title: "First Time Here?",
+                description: `Welcome to the <b>Grinderouz Leaders Workspace!</b> The Best leaders workspace. Wether it's your first time being a Elder Or Coleader in Clash Of Clans, This Workspace is the only place for you. If its your first time here make sure you add this app to your homescreen by finding your browsers share button and pressing add to homescreen. This is where you'll manage all the Elder/Coleader applications and Strikes. <br>
+                Use the <a href="management.html">Management Dashboard</a> For Management. You can also view a online changelog of the workspace here: <a href="changelog.txt">View Online Changelog</a><br>
+                More Q&A's will be coming to the <a href="faq.html">PlayBook FAQ</a> selection soon<br>
+                One Last thing, The Restore Deleted messages button only restores the messages currently in the database. Older messages will not be restored if removed from the code.`,
+                date: "June 2, 2026"
+            }
+        ];
+
+        let readMessages = JSON.parse(localStorage.getItem('glw_read_messages')) || [];
+        let deletedMessages = JSON.parse(localStorage.getItem('glw_deleted_messages')) || [];
+
+        const messagesList = document.getElementById('messages-list');
+        const resetBtn = document.getElementById('reset-btn');
+
+        function renderMessages() {
+            messagesList.innerHTML = '';
+
+            const activeMessages = MESSAGES_DATA.filter(msg => !deletedMessages.includes(msg.id));
+
+            if (activeMessages.length === 0) {
+                messagesList.innerHTML = `
+                    <div class="card" style="text-align: center; border-left-color: #555; padding: 40px 20px;">
+                        <h3 style="color: #aaa; margin: 0;">No Messages Found</h3>
+                        <p style="color: #666; margin: 8px 0 0 0;">Your messages are completely empty!</p>
+                    </div>`;
+                resetBtn.style.display = 'block';
+                return;
+            }
+
+            resetBtn.style.display = deletedMessages.length > 0 ? 'block' : 'none';
+
+            activeMessages.forEach(msg => {
+                const isRead = readMessages.includes(msg.id);
+
+                const card = document.createElement('div');
+                card.className = `card${isRead ? ' read' : ''}`;
+                card.id = `card-${msg.id}`;
+
+                let screenshotHTML = '';
+                if (msg.screenshot && msg.screenshot.trim() !== '') {
+                    screenshotHTML = `
+                        <div class="screenshot-container">
+                            <img class="screenshot-img" src="${msg.screenshot}" alt="Screenshot for ${msg.title}" />
+                        </div>`;
+                }
+
+                let safeDescription = msg.description.replace(/(\r\n|\n|\r)/g, "<br>");
+
+                card.innerHTML = `
+                    <div class="message-header">
+                        <div class="message-title-group">
+                            <h3 class="message-title">${msg.title}</h3>
+                            ${!isRead ? '<span class="unread-badge unread-indicator">New</span>' : ''}
+                        </div>
+                        <span class="message-date">${msg.date}</span>
+                    </div>
+                    <div class="message-description">${safeDescription}</div>
+                    ${screenshotHTML}
+                    <div class="message-actions">
+                        <button class="btn btn-action" onclick="toggleRead('${msg.id}')">
+                            ${isRead ? 'Mark as Unread' : 'Mark as Read'}
+                        </button>
+                        <button class="btn btn-delete" onclick="deleteMessage('${msg.id}')">Delete</button>
+                    </div>
+                `;
+                messagesList.appendChild(card);
+            });
+
+            updateNavbarBadge();
+        }
+
+        window.toggleRead = function(id) {
+            if (readMessages.includes(id)) {
+                readMessages = readMessages.filter(mId => mId !== id);
+            } else {
+                readMessages.push(id);
+            }
+            localStorage.setItem('glw_read_messages', JSON.stringify(readMessages));
+            renderMessages();
+            window.updateNavbarBadge?.();
+        };
+
+        window.deleteMessage = function(id) {
+            if (!deletedMessages.includes(id)) {
+                deletedMessages.push(id);
+                localStorage.setItem('glw_deleted_messages', JSON.stringify(deletedMessages));
+                renderMessages();
+                window.updateNavbarBadge?.();
+            }
+        };
+
+        resetBtn.addEventListener('click', () => {
+            deletedMessages = [];
+            readMessages = [];
+            localStorage.removeItem('glw_deleted_messages');
+            localStorage.removeItem('glw_read_messages');
+            renderMessages();
+            window.updateNavbarBadge?.();
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            localStorage.setItem('glw_messages_total', MESSAGES_DATA.length.toString());
+            renderMessages();
+        });
+    </script>
+</body>
+</html>
