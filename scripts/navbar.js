@@ -234,6 +234,26 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // iOS Safari Standalone Fix: Intercept internal link navigation to prevent opening new tabs
+    const isIOSStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+    
+    if (isIOSStandalone) {
+        document.addEventListener('click', (event) => {
+            const anchor = event.target.closest('a');
+            if (!anchor || !anchor.href) return;
+
+            // Check if link is same-origin and points to an internal HTML file or route
+            const targetUrl = new URL(anchor.href, window.location.href);
+            const isInternal = targetUrl.origin === window.location.origin;
+            const isExternalTab = anchor.getAttribute('target') === '_blank';
+
+            if (isInternal && !isExternalTab && !anchor.getAttribute('download')) {
+                event.preventDefault();
+                window.location.href = anchor.href;
+            }
+        });
+    }
+
     function updateNavbarBadge() {
         const totalMessages = Number(localStorage.getItem('glw_messages_total')) || 1;
         const readList = JSON.parse(localStorage.getItem('glw_read_messages')) || [];
