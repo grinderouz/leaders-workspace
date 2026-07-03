@@ -221,38 +221,29 @@ document.addEventListener("DOMContentLoaded", () => {
         if (link.getAttribute('href') === path) {
             link.classList.add('active');
         }
-        link.addEventListener("click", () => {
-            navLinks.classList.remove("show");
-            hamburger?.classList.remove("active");
-        });
     });
 
-    document.querySelectorAll('#navbar-container a[href*=".html"]').forEach(link => {
-        link.addEventListener("click", () => {
-            navLinks.classList.remove("show");
-            hamburger?.classList.remove("active");
-        });
+    // Universal PWA Navigation Handler (Fixes Windows, Android, and iOS Safari)
+    // Prevents installed PWAs from popping out into external browser tabs
+    document.addEventListener('click', (event) => {
+        const anchor = event.target.closest('a');
+        if (!anchor || !anchor.href) return;
+
+        // Check if the link points to an internal HTML page on the same domain
+        const targetUrl = new URL(anchor.href, window.location.href);
+        const isInternal = targetUrl.origin === window.location.origin;
+        const isExternalTab = anchor.getAttribute('target') === '_blank';
+
+        if (isInternal && !isExternalTab && !anchor.hasAttribute('download')) {
+            // Close mobile hamburger menu if open
+            navLinks?.classList.remove('show');
+            hamburger?.classList.remove('active');
+
+            // Force navigation inside the current PWA window frame
+            event.preventDefault();
+            window.location.href = anchor.href;
+        }
     });
-
-    // iOS Safari Standalone Fix: Intercept internal link navigation to prevent opening new tabs
-    const isIOSStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
-    
-    if (isIOSStandalone) {
-        document.addEventListener('click', (event) => {
-            const anchor = event.target.closest('a');
-            if (!anchor || !anchor.href) return;
-
-            // Check if link is same-origin and points to an internal HTML file or route
-            const targetUrl = new URL(anchor.href, window.location.href);
-            const isInternal = targetUrl.origin === window.location.origin;
-            const isExternalTab = anchor.getAttribute('target') === '_blank';
-
-            if (isInternal && !isExternalTab && !anchor.getAttribute('download')) {
-                event.preventDefault();
-                window.location.href = anchor.href;
-            }
-        });
-    }
 
     function updateNavbarBadge() {
         const totalMessages = Number(localStorage.getItem('glw_messages_total')) || 1;
