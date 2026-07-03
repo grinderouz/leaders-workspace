@@ -223,8 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Universal PWA Navigation Handler (Fixes Windows, Android, and iOS Safari)
-    // Prevents installed PWAs from popping out into external browser tabs
+    // PWA Navigation Handler - closes hamburger menu on internal navigation
     document.addEventListener('click', (event) => {
         const anchor = event.target.closest('a');
         if (!anchor || !anchor.href) return;
@@ -234,14 +233,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const isInternal = targetUrl.origin === window.location.origin;
         const isExternalTab = anchor.getAttribute('target') === '_blank';
 
-        if (isInternal && !isExternalTab && !anchor.hasAttribute('download')) {
-            // Close mobile hamburger menu if open
+        // Close mobile hamburger menu if open for internal links
+        if (isInternal && !isExternalTab) {
             navLinks?.classList.remove('show');
             hamburger?.classList.remove('active');
-
-            // Force navigation inside the current PWA window frame
-            event.preventDefault();
-            window.location.href = anchor.href;
         }
     });
 
