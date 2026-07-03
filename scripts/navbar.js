@@ -221,20 +221,16 @@ document.addEventListener("DOMContentLoaded", () => {
         if (link.getAttribute('href') === path) {
             link.classList.add('active');
         }
-        link.addEventListener("click", (e) => {
-            e.preventDefault();
+        link.addEventListener("click", () => {
             navLinks.classList.remove("show");
             hamburger?.classList.remove("active");
-            window.location.href = link.getAttribute('href');
         });
     });
 
     document.querySelectorAll('#navbar-container a[href*=".html"]').forEach(link => {
-        link.addEventListener("click", (e) => {
-            e.preventDefault();
+        link.addEventListener("click", () => {
             navLinks.classList.remove("show");
             hamburger?.classList.remove("active");
-            window.location.href = link.getAttribute('href');
         });
     });
 
