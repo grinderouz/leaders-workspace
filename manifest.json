@@ -2,7 +2,7 @@
   "name": "Grinderouz Leaders Workspace",
   "short_name": "GLW",
   "description": "Workspace and playbook for Grinderouz clan leaders, co-leaders, and elders.",
-  "start_url": "./index.html",
+  "start_url": "index.html",
   "scope": ".",
   "display": "standalone",
   "background_color": "#1a1a1a",
