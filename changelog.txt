@@ -1,6 +1,14 @@
-V1.5.4 July 1, 2026
+V1.7.5 July 7, 2026
 -----------------------------
-Bug Fixes & Improvements, OverHaul, Themes Removed Completely, Settings Has beeen removed, 
+Online Subscriptions Added, Small Improvements, New messages, Dropdown Menus, Giveaway Spinner Added,
+
+V1.6.5 July 3, 2026
+-----------------------------
+GPoints System, Minor Bug Fixes, New Messages, TOS For Points System added, 
+
+V1.5.4 July 2, 2026
+-----------------------------
+Bug Fixes & Improvements, OverHaul, Themes Removed Completely, Settings Has been removed, 
 Updates to Lockscreen, App Revamped for smoother performance, Messages Tab for Admins, Logo Updates, Navbar updates,
 New Banner Image, 
 

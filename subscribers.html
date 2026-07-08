@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a1a">
+    <title>GLW - Active Online Subscriptions</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            background: #1a1a1a;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+        }
+        main {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 24px 16px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .card {
+            background: #2a2a2a;
+            padding: 18px 22px;
+            margin: 20px 0;
+            border-left: 5px solid #d4af37;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        body::-webkit-scrollbar {
+            width: 14px;
+            background: #191919;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 7px;
+            border: 3px solid #191919;
+        }
+        body::-webkit-scrollbar-thumb:hover {
+            background: #b89a2b;
+        }
+        body::-webkit-scrollbar-track {
+            background: #191919;
+            border-radius: 8px;
+        }
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #d4af37 #191919;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        .card-basic    { border-left: 5px solid #379ad4; }
+        .card-ultimate { border-left: 5px solid #d4af37; }
+        .card-creators { border-left: 5px solid #68ffb9; }
+        h2 {
+            color: #d4af37;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            body { font-size: 15px; }
+            .card { padding: 10px 8px; }
+        }
+    </style>
+    <script src="scripts/lock.js"></script>
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <script src="scripts/navbar.js"></script>
+
+    <main>
+        <h2>Active Subscriptions</h2>
+        <p>Only a Funds Account Holder can update subscriptions status. This excludes Elders and Coleaders from changing any roles.</p>
+        <div style="display: flex; gap: 18px; justify-content: center; margin: 16px 0 28px 0;">
+            <img src="assets/plans/online-basic.png" alt="Basic Plan" title="Basic Plan" style="width:32px;height:32px;">
+            <img src="assets/plans/online-ultimate.png" alt="Ultimate Plan" title="Ultimate Plan" style="width:32px;height:32px;">
+            <img src="assets/plans/online-creators.png" alt="Creators Plan" title="Creators Plan" style="width:32px;height:32px;">
+        </div>
+        <div id="subscription-list"></div>
+    </main>
+
+    <script>
+        const SUBSCRIPTION_DATA = [
+            { username: "MAYO", lastPaid: "7/7/2026", tier: "Basic", method: "Cash App", since: "7/7/2026", freeTrial: "N" }
+        ];
+
+        const TIER_CLASS = {
+            Basic: "card-basic",
+            Ultimate: "card-ultimate",
+            Creators: "card-creators"
+        };
+
+        const listContainer = document.getElementById('subscription-list');
+
+        SUBSCRIPTION_DATA.forEach(member => {
+            const card = document.createElement('div');
+            let className = 'card';
+            if (TIER_CLASS[member.tier]) className += ' ' + TIER_CLASS[member.tier];
+            card.className = className;
+            card.innerHTML = `
+                <h3>${member.username}</h3>
+                <p><strong>Tier:</strong> ${member.tier}</p>
+                <p><strong>Last Paid:</strong> ${member.lastPaid} | <strong>Member Since:</strong> ${member.since}</p>
+                <p><strong>Payment Method:</strong> ${member.method}</p>
+                <p><strong>Free Trial:</strong> ${member.freeTrial}</p>
+            `;
+            listContainer.appendChild(card);
+        });
+    </script>
+</body>
+</html>

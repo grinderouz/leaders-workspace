@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLW - Giveaway Spinner</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #d4af37 #191919;
+        }
+        body {
+            background-color: #111;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        body::-webkit-scrollbar {
+            width: 14px;
+            background: #191919;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 7px;
+            border: 3px solid #191919;
+        }
+        body::-webkit-scrollbar-thumb:hover {
+            background: #b89a2b;
+        }
+        body::-webkit-scrollbar-track {
+            background: #191919;
+            border-radius: 8px;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        .container {
+            margin-top: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+        }
+
+        .setup-panel {
+            width: 100%;
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #252525;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .setup-panel h3 {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .textarea-container {
+            position: relative;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            padding: 0.8rem;
+            resize: none;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #ff4b2b #181818;
+        }
+        textarea::-webkit-scrollbar {
+            width: 10px;
+            background: #181818;
+            border-radius: 8px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 8px;
+            border: 2px solid #181818;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #ff4b2b;
+        }
+        textarea:focus {
+            border-color: #ff4b2b;
+        }
+
+        .hint {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+
+        .wheel-box {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ticker {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid #ff4b2b;
+            z-index: 10;
+            filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.6));
+        }
+
+        canvas {
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), 0 0 0 8px #222;
+            background: #1a1a1a;
+        }
+
+        .spin-btn {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background: #fff;
+            color: #111;
+            border-radius: 50%;
+            border: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s, background-color 0.2s;
+            z-index: 5;
+            outline: none;
+        }
+        .spin-btn:hover {
+            transform: scale(1.05);
+            background: #f0f0f0;
+        }
+        .spin-btn:disabled {
+            background: #444;
+            color: #777;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .winner-display {
+            visibility: hidden;
+            opacity: 0;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: #1a1a1a;
+            border: 2px solid #ff4b2b;
+            padding: 2rem 3rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            z-index: 200;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .winner-display.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .winner-display h2 {
+            font-size: 1.2rem;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        .winner-name {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-btn {
+            background: #ff4b2b;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+        .close-btn:hover {
+            opacity: 0.9;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            z-index: 150;
+            display: none;
+        }
+        .overlay.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="navbar-container"></div>
+
+    <div class="container">
+        <h1 style="font-size: 2rem; margin-bottom: 0.3em; color: #ffd700; letter-spacing: 0.02em; text-align: center;">
+            Online Members <br>Giveaway Wheel
+        </h1>
+        <p style="color: #bbb; margin-bottom: 1.2em; text-align: center;">
+            Enter up to 10 names and spin the wheel for the Online Members Monthly Giveaways, Only a Funds Account Member can be in charge of these.
+        </p>
+        <p style="color: #ffffff; margin-bottom: 1.2em; text-align: center;">
+            Last Giveaway Date: None yet
+            <br>Last Winner: None yet
+        </p>
+        <div class="setup-panel">
+            <h3>Enter Names (Max 10)</h3>
+            <div class="textarea-container">
+                <textarea id="namesInput" placeholder="Enter one name per line...">Name 1&#10;Name 2&#10;Name 3&#10;</textarea>
+            </div>
+            <div class="hint" id="countHint">3 / 10 names</div>
+        </div>
+
+        <div class="wheel-box">
+            <div class="ticker"></div>
+            <button class="spin-btn" id="spinBtn">Spin</button>
+            <canvas id="wheelCanvas" width="420" height="420"></canvas>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="winner-display" id="winnerDisplay">
+        <h2>AND THE WINNER IS...</h2>
+        <div class="winner-name" id="winnerName">---</div>
+        <button class="close-btn" onclick="closeWinner()">Awesome</button>
+    </div>
+
+    <script src="scripts/navbar.js"></script>
+    <script>
+        const canvas = document.getElementById('wheelCanvas');
+        const ctx = canvas.getContext('2d');
+        const namesInput = document.getElementById('namesInput');
+        const countHint = document.getElementById('countHint');
+        const spinBtn = document.getElementById('spinBtn');
+        const winnerDisplay = document.getElementById('winnerDisplay');
+        const winnerName = document.getElementById('winnerName');
+        const overlay = document.getElementById('overlay');
+
+        const colors = [
+            '#ff416c', '#ff4b2b', '#4ac1ff', '#4776e6', 
+            '#8e2de2', '#f000ff', '#00b4db', '#00f2fe',
+            '#f12711', '#f5af19'
+        ];
+
+        let names = [];
+        let currentAngle = 0;
+        let isSpinning = false;
+
+        function updateNames() {
+            let lines = namesInput.value.split('\n')
+                .map(line => line.trim())
+                .filter(line => line !== '');
+
+            if (lines.length > 10) {
+                lines = lines.slice(0, 10);
+                namesInput.value = lines.join('\n');
+            }
+
+            names = lines;
+            countHint.textContent = `${names.length} / 10 names`;
+            drawWheel();
+        }
+
+        function drawWheel() {
+            const numSegments = names.length;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = centerX - 10;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (numSegments === 0) {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+                ctx.fillStyle = '#222';
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#333';
+                ctx.stroke();
+                return;
+            }
+
+            const arcSize = (2 * Math.PI) / numSegments;
+
+            for (let i = 0; i < numSegments; i++) {
+                const angle = currentAngle + (i * arcSize);
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, angle, angle + arcSize);
+                ctx.fillStyle = colors[i % colors.length];
+                ctx.fill();
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = 'rgba(17, 17, 17, 0.5)';
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(centerX, centerY);
+                ctx.rotate(angle + arcSize / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold 14px sans-serif';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+                ctx.shadowBlur = 4;
+                ctx.fillText(names[i], radius - 25, 5);
+                ctx.restore();
+            }
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = '#222';
+            ctx.stroke();
+        }
+
+        function spin() {
+            if (isSpinning || names.length === 0) return;
+
+            isSpinning = true;
+            spinBtn.disabled = true;
+            namesInput.disabled = true;
+
+            const duration = 10000;
+            const startTimestamp = performance.now();
+            const startAngle = currentAngle % (2 * Math.PI);
+            const totalRotation = (Math.PI * 2 * 25) + (Math.random() * Math.PI * 2);
+
+            function animate(now) {
+                const elapsed = now - startTimestamp;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+
+                currentAngle = startAngle + (totalRotation * easeOutCubic);
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    finalizeWinner();
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        function finalizeWinner() {
+            isSpinning = false;
+            spinBtn.disabled = false;
+            namesInput.disabled = false;
+
+            const numSegments = names.length;
+            const arcSize = (2 * Math.PI) / numSegments;
+
+            let normalizedAngle = currentAngle % (2 * Math.PI);
+            if (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
+
+            let targetAngle = (1.5 * Math.PI) - normalizedAngle;
+            if (targetAngle < 0) targetAngle += 2 * Math.PI;
+
+            const winnerIndex = Math.floor(targetAngle / arcSize) % numSegments;
+
+            winnerName.textContent = names[winnerIndex];
+            winnerDisplay.classList.add('show');
+            overlay.classList.add('show');
+        }
+
+        function closeWinner() {
+            winnerDisplay.classList.remove('show');
+            overlay.classList.remove('show');
+        }
+
+        namesInput.addEventListener('input', updateNames);
+        spinBtn.addEventListener('click', spin);
+
+        updateNames();
+    </script>
+    <script src="scripts/lock.js"></script>
+</body>
+</html>
