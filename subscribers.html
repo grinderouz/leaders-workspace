@@ -62,6 +62,12 @@
             color: #d4af37;
             text-align: center;
         }
+        .alert-icon {
+            vertical-align: middle;
+            width: 18px;
+            height: 18px;
+            margin-left: 5px;
+        }
         @media (max-width: 600px) {
             body { font-size: 15px; }
             .card { padding: 10px 8px; }
@@ -85,6 +91,24 @@
     </main>
 
     <script>
+        function parseMDY(dateStr) {
+            const parts = dateStr.split('/');
+            if (parts.length !== 3) return null;
+            const m = parseInt(parts[0], 10) - 1;
+            const d = parseInt(parts[1], 10);
+            const y = parseInt(parts[2], 10);
+            if (isNaN(m) || isNaN(d) || isNaN(y)) return null;
+            return new Date(y, m, d);
+        }
+
+        function isOlderThanOneMonth(dateStr) {
+            const paidDate = parseMDY(dateStr);
+            if (!paidDate) return false;
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+            return paidDate < oneMonthAgo;
+        }
+
         const SUBSCRIPTION_DATA = [
             { username: "MAYO", lastPaid: "7/7/2026", tier: "Ultimate", method: "Cash App", since: "7/7/2026", freeTrial: "N" }
         ];
@@ -102,10 +126,16 @@
             let className = 'card';
             if (TIER_CLASS[member.tier]) className += ' ' + TIER_CLASS[member.tier];
             card.className = className;
+            
+            let lastPaidHtml = `${member.lastPaid}`;
+            if (isOlderThanOneMonth(member.lastPaid)) {
+                lastPaidHtml += ` <img src="assets/notified.png" alt="Alert: Payment overdue" title="This subscription's last payment date is past due!" class="alert-icon">`;
+            }
+
             card.innerHTML = `
                 <h3>${member.username}</h3>
                 <p><strong>Tier:</strong> ${member.tier}</p>
-                <p><strong>Last Paid:</strong> ${member.lastPaid} | <strong>Member Since:</strong> ${member.since}</p>
+                <p><strong>Last Paid:</strong> ${lastPaidHtml} | <strong>Member Since:</strong> ${member.since}</p>
                 <p><strong>Payment Method:</strong> ${member.method}</p>
                 <p><strong>Free Trial:</strong> ${member.freeTrial}</p>
             `;
