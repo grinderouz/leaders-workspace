@@ -1,3 +1,9 @@
+V1.8.5 July 8, 2026
+-----------------------------
+Online Subscribers Page shows if a Subscription has expired or not. SFX added to the Wheel Spinner, 
+Redesigned Wheel Spinner Page, Website Section in Management changed to Online Subscribers, More Q&A's, 
+More Quick Access features to Homepage, Emojis Script Added, Finally New Messages,
+
 V1.7.5 July 7, 2026
 -----------------------------
 Online Subscriptions Added, Small Improvements, New messages, Dropdown Menus, Giveaway Spinner Added,
@@ -6,7 +12,7 @@ V1.6.5 July 3, 2026
 -----------------------------
 GPoints System, Minor Bug Fixes, New Messages, TOS For Points System added, 
 
-V1.5.4 July 2, 2026
+V1.5.4 July 2, 2026 - Overhaul For Performance
 -----------------------------
 Bug Fixes & Improvements, OverHaul, Themes Removed Completely, Settings Has been removed, 
 Updates to Lockscreen, App Revamped for smoother performance, Messages Tab for Admins, Logo Updates, Navbar updates,

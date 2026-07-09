@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <nav class="navbar-links" id="navbar-links">
                 <a href="index.html" class="nav-link">RULES & RANKS</a>
+                
                 <div class="nav-link dropdown" tabindex="0">
                     ONLINE SUBSCRIBERS
                     <svg class="dropdown-caret" width="20" height="20" viewBox="0 0 16 16" aria-hidden="true" focusable="false" style="margin-left:6px; vertical-align: middle;">
@@ -32,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <a href="sub-spinner.html" class="dropdown-link">Subscriber Wheel Spin</a>
                     </div>
                 </div>
+                
                 <a href="messages.html" class="nav-link">MESSAGES</a>
                 <a href="faq.html" class="nav-link">PLAYBOOK FAQ</a>
                 <a href="management.html" class="nav-link">MANAGEMENT</a>
