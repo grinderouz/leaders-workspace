@@ -2,172 +2,267 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#1a1a1a">
+    <meta name="theme-color" content="#0a0a0a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>GLW - Dashboard</title>
     <link rel="icon" type="image/png" href="assets/navicon.png">
     <link rel="manifest" href="manifest.json">
     <style>
-        body {
-            background: #1a1a1a;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            width: 100vw;
+        :root {
+            --obsidian-bg: #0a0a0a;
+            --iron-surface: rgba(22, 20, 18, 0.95);
+            --plate-surface: #141311;
+            --gold-accent: #c5a059;
+            --gold-bright: #f3e5ab;
+            --gold-glow: rgba(197, 160, 89, 0.25);
+            --border-muted: rgba(60, 55, 45, 0.6);
+            --border-bright: rgba(197, 160, 89, 0.5);
+            --text-main: #e8e6df;
+            --text-muted: #9e9a8f;
+            --snappy-timing: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after {
             box-sizing: border-box;
         }
-        a {
-            color: #ffa500;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        a:hover {
-            color: #fff;
-        }
-        main {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 24px 16px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        section {
-            max-width: 720px;
-            margin: 0 auto;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .card {
-            background: #2a2a2a;
-            padding: 18px 22px;
-            margin: 20px 0;
-            border-left: 5px solid #d4af37;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
-        details {
-            background: #2a2a2a;
-            padding: 13px 18px;
-            margin: 16px 0;
-            border-radius: 6px;
-            box-sizing: border-box;
-            cursor: pointer;
-        }
-        @media (max-width: 1000px) {
-            main,
-            section {
-                max-width: 98vw;
-                padding-left: 2vw;
-                padding-right: 2vw;
-            }
-            .card,
-            details {
-                padding-left: 4vw;
-                padding-right: 4vw;
-            }
-        }
-        @media (max-width: 600px) {
-            main,
-            section {
-                max-width: 100vw;
-                padding-left: 2vw;
-                padding-right: 2vw;
-            }
-            .card,
-            details {
-                padding: 10px 8px;
-                font-size: 0.96em;
-            }
-            body {
-                font-size: 15px;
-            }
-        }
-        @media (max-width: 400px) {
-            .card,
-            details {
-                padding: 7px 2px;
-                font-size: 0.91em;
-            }
-        }
+
         html,
         body {
             max-width: 100vw;
             overflow-x: hidden;
         }
+
         body {
+            background: var(--obsidian-bg);
+            color: var(--text-main);
+            font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            width: 100vw;
             padding-top: 0 !important;
+            line-height: 1.6;
         }
-        body::-webkit-scrollbar {
-            width: 14px;
-            background: #191919;
+
+        a {
+            color: var(--gold-accent);
+            text-decoration: none;
+            transition: all var(--snappy-timing);
+            border-bottom: 1px solid transparent;
         }
-        body::-webkit-scrollbar-thumb {
-            background: #d4af37;
-            border-radius: 7px;
-            border: 3px solid #191919;
+        a:hover {
+            color: var(--gold-bright);
+            border-bottom: 1px solid var(--gold-bright);
+            text-shadow: 0 0 8px var(--gold-glow);
         }
-        body::-webkit-scrollbar-thumb:hover {
-            background: #b89a2b;
+
+        h2, h3 {
+            font-family: 'Segoe UI', 'Trebuchet MS', Trajan, Georgia, serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold-bright);
+            margin-top: 0;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
         }
-        body::-webkit-scrollbar-track {
-            background: #191919;
-            border-radius: 8px;
+
+        h2 {
+            font-size: 1.45rem;
+            border-bottom: 1px solid var(--border-muted);
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            margin-top: 30px;
         }
-        html {
-            scrollbar-width: thin;
-            scrollbar-color: #d4af37 #191919;
+
+        h3 {
+            font-size: 1.15rem;
+            color: var(--gold-accent);
+            margin-bottom: 14px;
         }
-        *, *::before, *::after {
-            box-sizing: border-box;
+
+        main {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 24px 20px;
+            width: 100%;
         }
+
+        section {
+            max-width: 760px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        strong {
+            color: var(--text-main);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .card {
+            background: var(--iron-surface);
+            padding: 22px 26px;
+            margin: 20px 0;
+            border: 1px solid var(--border-muted);
+            border-left: 3px solid var(--gold-accent);
+            border-radius: 2px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), inset 0 0 12px rgba(0, 0, 0, 0.6);
+            transition: border-color var(--snappy-timing), box-shadow var(--snappy-timing);
+        }
+
+        .card:hover {
+            border-color: var(--border-bright);
+            border-left: 3px solid var(--gold-bright);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.9), 0 0 15px var(--gold-glow);
+        }
+
+        details {
+            background: var(--iron-surface);
+            padding: 14px 20px;
+            margin: 16px 0;
+            border: 1px solid var(--border-muted);
+            border-left: 3px solid var(--gold-accent);
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all var(--snappy-timing);
+        }
+
+        details:hover {
+            border-color: var(--border-bright);
+            box-shadow: 0 0 12px var(--gold-glow);
+        }
+
         #navbar-container {
             position: sticky !important;
             top: 0;
             z-index: 1100;
-            background: #1a1a1a;
+            background: transparent;
             width: 100%;
         }
+
         .banner-header {
             width: 100%;
-            min-height: 190px;
-            background: url('assets/banner.png') center center/cover no-repeat, #191919;
+            min-height: 220px;
+            background: linear-gradient(180deg, rgba(10,10,10,0.3) 0%, var(--obsidian-bg) 100%), 
+                        url('assets/banner.png') center center/cover no-repeat, 
+                        #12110f;
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 38px;
             position: relative;
+            border-bottom: 1px solid var(--border-muted);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.9);
         }
+
         .banner-header-inner {
-            background: rgba(25, 25, 25, 0.87);
-            padding: 34px 56px 30px 56px;
-            border-radius: 12px;
-            box-shadow: 0 2px 24px #0008;
+            background: rgba(15, 14, 12, 0.88);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 34px 48px 30px 48px;
+            border: 1px solid var(--border-muted);
+            border-radius: 2px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.95), inset 0 0 15px rgba(0,0,0,0.8);
             display: flex;
             flex-direction: column;
             align-items: center;
-            max-width: 94vw;
+            max-width: 92vw;
+            text-align: center;
         }
+
         .banner-header-inner img {
             width: 62px;
             height: 62px;
-            margin-bottom: 10px;
+            margin-bottom: 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border-muted);
+            background: #191919;
+            padding: 2px;
         }
+
         .banner-header-inner h1 {
-            font-size: 2.25em;
-            color: #d4af37;
-            margin: 0 0 4px 0;
-            letter-spacing: 2.5px;
-            font-family: 'Segoe UI', sans-serif;
-            text-shadow: 1px 2px 16px #000b;
+            font-size: 2.1em;
+            color: var(--gold-bright);
+            margin: 0 0 6px 0;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-family: 'Segoe UI', 'Trebuchet MS', Trajan, Georgia, serif;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9), 0 0 15px var(--gold-glow);
         }
+
         .banner-header-inner span {
-            font-size: 1.1em;
-            color: #fffbe8cc;
-            margin-top: 6px;
-            letter-spacing: 1px;
+            font-size: 0.95em;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Custom Scrollbar */
+        body::-webkit-scrollbar {
+            width: 12px;
+            background: var(--obsidian-bg);
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #23201c;
+            border: 1px solid var(--border-muted);
+            border-radius: 1px;
+        }
+        body::-webkit-scrollbar-thumb:hover {
+            background: var(--border-muted);
+            border-color: var(--gold-accent);
+        }
+        body::-webkit-scrollbar-track {
+            background: var(--obsidian-bg);
+        }
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #23201c var(--obsidian-bg);
+        }
+
+        @media (max-width: 1000px) {
+            main, section {
+                max-width: 96vw;
+                padding-left: 3vw;
+                padding-right: 3vw;
+            }
+            .card, details {
+                padding: 18px 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            main, section {
+                max-width: 100vw;
+                padding-left: 4vw;
+                padding-right: 4vw;
+            }
+            .card, details {
+                padding: 16px 14px;
+                font-size: 0.95em;
+            }
+            .banner-header-inner {
+                padding: 24px 20px;
+            }
+            .banner-header-inner h1 {
+                font-size: 1.5em;
+                letter-spacing: 1.5px;
+            }
+            body {
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .card, details {
+                padding: 12px 10px;
+                font-size: 0.92em;
+            }
         }
     </style>
     <script src="scripts/lock.js"></script>
@@ -183,46 +278,53 @@
                 <span>Rules & Resources for Clan Management</span>
             </div>
         </div>
+        
         <section id="links" style="margin-bottom: 30px;">
-            <div class="card" style="display: flex; flex-direction: column; align-items: center;">
-                <h2 style="margin-bottom: 16px; color: #d4af37;">Visit & Connect</h2>
-                <p>
-                    <a data-emojis href="https://grinderouz.github.io/clan/" target="_blank" style="color: #d3d2d2; font-weight: bold; text-decoration: underline; margin-right: 18px;">
-                        :link: Visit our Home Website
+            <div class="card" style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+                <h2 style="margin-top: 0; margin-bottom: 16px; border-bottom: none; padding-bottom: 0;">Visit & Connect</h2>
+                <p style="display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 12px;">
+                    <a data-emojis href="https://grinderouz.github.io/clan/" target="_blank" style="color: var(--text-main); font-weight: bold; text-decoration: none; padding: 6px 12px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-muted); border-radius: 2px;">
+                        :link: Visit Home Website
                     </a>
-                    <a data-emojis href="https://www.youtube.com/@grinderouz223?sub_confirmation=1" target="_blank" style="color: #d43737; font-weight: bold; text-decoration: underline; margin-right: 18px;">
+                    <a data-emojis href="https://www.youtube.com/@grinderouz223?sub_confirmation=1" target="_blank" style="color: #e55353; font-weight: bold; text-decoration: none; padding: 6px 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(229, 83, 83, 0.3); border-radius: 2px;">
                         :youtube: YouTube
                     </a>
-                    <a data-emojis href="https://discord.gg/jEN9NNdA4v" target="_blank" style="color: #3761d4; font-weight: bold; text-decoration: underline; margin-right: 18px;">
+                    <a data-emojis href="https://discord.gg/jEN9NNdA4v" target="_blank" style="color: #5865F2; font-weight: bold; text-decoration: none; padding: 6px 12px; background: rgba(0,0,0,0.4); border: 1px solid rgba(88, 101, 242, 0.3); border-radius: 2px;">
                         :discord: Join Our Server!
-                    </a><br>
+                    </a>
                 </p>
-                <p style="margin-top: 10px;">
+                <p style="margin-top: 8px; margin-bottom: 0; font-size: 0.92rem;">
                     Stay updated, chat with the clan, and like or follow us for the latest!
                 </p>
             </div>
         </section>
-        <h2>Welcome to the Leaders Workspace!</h2>
-        <p>
-            Here you can read the <a href="faq.html">Clan PlayBook</a> if you're new to the team. You can browse the <a href="management.html">Forms Database</a> for viewing the GLW Strike System and also the Elder &amp; Co Leader Applications.
-            <br><br>
-            If you've just opened the GLW for the first time, explore the PlayBook and Records pages. This workspace keeps your data local and secure while you manage clan forms and strike logs.
-        </p>
+
+        <h2>Welcome to the Leaders Workspace</h2>
+        <div class="card" style="border-left-color: var(--border-muted);">
+            <p style="margin-top: 0;">
+                Here you can read the <a href="faq.html">Clan PlayBook</a> if you're new to the team. You can browse the <a href="management.html">Forms Database</a> for viewing the GLW Strike System and also the Elder &amp; Co Leader Applications.
+            </p>
+            <p style="margin-bottom: 0;">
+                If you've just opened the GLW for the first time, explore the PlayBook and Records pages. This workspace keeps your data local and secure while you manage clan forms and strike logs.
+            </p>
+        </div>
+
         <section id="rules">
             <h2>Rules & Ranks</h2>
             <div class="card">
-                <h3>BOTH ROLES</h3>
-                <strong>Strike Log Rules</strong>
+                <h3>Both Roles</h3>
                 <p>
+                    <strong>Strike Log Rules</strong><br>
                     When issuing a warning or strike, submit a <a href="management.html">Strike Log Form</a>. This is for missed war attacks and related issues (not inactivity kicks). If the user is in Discord, you may give a strike log and ping warning&mdash;keep it fair for everyone. Blacklisting is available if needed.
                 </p>
-                <strong>LOA - Leave of Absence</strong>
-                <p>
+                <p style="margin-bottom: 0;">
+                    <strong>LOA - Leave of Absence</strong><br>
                     If you go on vacation or will be inactive, post your expected return in the Discord LOA channel. Extended inactivity may result in removal, but a spot will be kept for you. This applies to Elders and Co-leaders only.
                 </p>
             </div>
+            
             <div class="card">
-                <h3>ELDER RULES</h3>
+                <h3>Elder Rules</h3>
                 <p>
                     <strong>Set the Example</strong><br>
                     Elders must uphold all clan rules and model behavior for new members.
@@ -231,13 +333,14 @@
                     <strong>Welcome & Support</strong><br>
                     Welcome newcomers and answer questions in chat or Discord. Help maintain a positive clan atmosphere.
                 </p>
-                <p>
+                <p style="margin-bottom: 0;">
                     <strong>Maintain Activity</strong><br>
                     Stay active, donate regularly, and participate in wars, clan games, and raids.
                 </p>
             </div>
+            
             <div class="card">
-                <h3>CO-LEADER RULES</h3>
+                <h3>Co-Leader Rules</h3>
                 <p>
                     <strong>Minimum Town Hall</strong><br>
                     You must have at least Town Hall 11 on one of your accounts to become a Co-leader.
@@ -250,26 +353,27 @@
                     <strong>No Rogue Kicking</strong><br>
                     Do not kick any member without a valid reason (e.g., missed war attacks, toxicity). Kicking Elders must be discussed with the Leader first. Excessive kicking will be questioned.
                 </p>
-                <p>
+                <p style="margin-bottom: 0;">
                     <strong>Recruits Announcements</strong><br>
                     When promoting a member to Elder, post their name, tag, and Discord user in the Recruits channel. Failure to do so may result in a warning.
                 </p>
             </div>
+            
             <div class="card">
-                <h3>LEADER REQUIREMENTS</h3>
+                <h3>Leader Requirements</h3>
                 <p>
                     <strong>Elder Requirements</strong><br>
                     1000+ donations, full participation in consecutive wars, and at least 1 month in the clan.
                 </p>
                 <p>
-                    <strong>Co-leader Requirements</strong><br>
+                    <strong>Co-Leader Requirements</strong><br>
                     Town Hall 11+, 3+ months in the clan, active participation.
                 </p>
                 <p>
                     <strong>Clan Mail</strong><br>
                     Use global messages only for important updates such as war starts, clan games goals, or raid weekend reminders. Avoid spamming.
                 </p>
-                <p>
+                <p style="margin-bottom: 0;">
                     <strong>Promotion Integrity</strong><br>
                     Never promote anyone to Elder or Co-leader just because they ask. Follow all established requirements.
                 </p>

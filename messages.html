@@ -2,57 +2,117 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#1a1a1a">
+    <meta name="theme-color" content="#0a0a0a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>GLW - Messages</title>
     <link rel="icon" type="image/png" href="assets/navicon.png">
     <link rel="manifest" href="manifest.json">
     <style>
+        :root {
+            --obsidian-bg: #0a0a0a;
+            --iron-surface: rgba(22, 20, 18, 0.95);
+            --plate-surface: #141311;
+            --gold-accent: #c5a059;
+            --gold-bright: #f3e5ab;
+            --gold-glow: rgba(197, 160, 89, 0.25);
+            --border-muted: rgba(60, 55, 45, 0.6);
+            --border-bright: rgba(197, 160, 89, 0.5);
+            --text-main: #e8e6df;
+            --text-muted: #9e9a8f;
+            --snappy-timing: 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
         body {
-            background: #1a1a1a;
-            color: #fff;
-            font-family: Arial, sans-serif;
+            background: var(--obsidian-bg);
+            color: var(--text-main);
+            font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
             width: 100vw;
-            box-sizing: border-box;
+            line-height: 1.6;
         }
         a {
-            color: #ffa500;
+            color: var(--gold-accent);
             text-decoration: none;
-            transition: color 0.2s;
+            transition: all var(--snappy-timing);
+            border-bottom: 1px solid transparent;
         }
         a:hover {
-            color: #fff;
+            color: var(--gold-bright);
+            border-bottom: 1px solid var(--gold-bright);
+            text-shadow: 0 0 8px var(--gold-glow);
+        }
+        h2, h3 {
+            font-family: 'Segoe UI', 'Trebuchet MS', Trajan, Georgia, serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold-bright);
+            margin-top: 0;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+        }
+        h2 {
+            font-size: 1.45rem;
+            border-bottom: 1px solid var(--border-muted);
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            margin-top: 30px;
         }
         main {
-            max-width: 720px;
+            max-width: 760px;
             margin: 0 auto;
-            padding: 24px 16px;
+            padding: 24px 20px;
             width: 100%;
-            box-sizing: border-box;
         }
         section {
-            max-width: 720px;
+            max-width: 760px;
             margin: 0 auto;
             width: 100%;
-            box-sizing: border-box;
         }
         .card {
-            background: #2a2a2a;
-            padding: 18px 22px;
+            background: var(--iron-surface);
+            padding: 22px 26px;
             margin: 20px 0;
-            border-left: 5px solid #378dd4;
-            border-radius: 6px;
-            box-sizing: border-box;
+            border: 1px solid var(--border-muted);
+            border-left: 3px solid var(--gold-accent);
+            border-radius: 2px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8), inset 0 0 12px rgba(0, 0, 0, 0.6);
             position: relative;
-            transition: opacity 0.2s, border-color 0.2s;
+            transition: opacity 0.2s, border-color var(--snappy-timing), box-shadow var(--snappy-timing);
+        }
+        .card:hover {
+            border-color: var(--border-bright);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.9), 0 0 15px var(--gold-glow);
         }
         .card.read {
-            border-left-color: #555;
-            opacity: 0.75;
+            border-left-color: rgba(100, 95, 85, 0.6);
+            opacity: 0.65;
+        }
+        .card.read.collapsed {
+            padding: 12px 20px;
+            cursor: pointer;
+            box-shadow: none;
+            border-left-color: var(--border-muted);
+        }
+        .card.read.collapsed:hover {
+            border-left-color: var(--gold-accent);
+            opacity: 1;
+        }
+        .card.read.collapsed .message-title {
+            color: var(--text-muted);
+        }
+        .card.read.collapsed .expand-arrow {
+            margin-left: 10px;
+            font-size: 1.1em;
+            color: var(--gold-bright);
+            vertical-align: middle;
         }
         .message-header {
             display: flex;
@@ -61,6 +121,8 @@
             flex-wrap: wrap;
             margin-bottom: 10px;
             gap: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 8px;
         }
         .message-title-group {
             display: flex;
@@ -69,39 +131,46 @@
         }
         .message-title {
             margin: 0;
-            font-size: 1.25em;
-            color: #3788d4;
+            font-size: 1.2rem;
+            color: var(--gold-bright);
+            letter-spacing: 1.5px;
         }
         .card.read .message-title {
-            color: #bbb;
+            color: var(--text-muted);
         }
         .unread-indicator {
-            background: #ff3333;
-            color: white;
-            font-size: 0.75em;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 4px;
+            background: #a32a2a;
+            color: #fff;
+            font-size: 0.7em;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            padding: 2px 8px;
+            border-radius: 2px;
+            border: 1px solid #d94141;
             text-transform: uppercase;
+            box-shadow: 0 0 8px rgba(163, 42, 42, 0.5);
         }
         .message-date {
             font-size: 0.85em;
-            color: #aaa;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
         .message-description {
-            margin: 12px 0;
-            line-height: 1.5;
-            color: #eee;
+            margin: 14px 0;
+            line-height: 1.6;
+            color: var(--text-main);
             white-space: pre-line;
             word-break: break-word;
         }
         .screenshot-container {
-            margin: 15px 0;
+            margin: 18px 0;
             max-width: 100%;
-            border-radius: 6px;
+            border-radius: 2px;
             overflow: hidden;
-            border: 1px solid #444;
-            background: #151515;
+            border: 1px solid var(--border-muted);
+            background: #100f0d;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.8);
         }
         .screenshot-img {
             display: block;
@@ -112,79 +181,97 @@
         }
         .message-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 12px;
+            margin-top: 18px;
             justify-content: flex-end;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 14px;
         }
         .btn {
-            padding: 6px 14px;
-            font-size: 0.88em;
-            font-weight: bold;
-            border: none;
-            border-radius: 4px;
+            padding: 8px 18px;
+            font-size: 0.82em;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: 1px solid var(--border-muted);
+            border-radius: 2px;
             cursor: pointer;
-            transition: background 0.18s, color 0.18s;
+            transition: all var(--snappy-timing);
+            font-family: 'Segoe UI', 'Trebuchet MS', sans-serif;
         }
         .btn-action {
-            background: #3a3a3a;
-            color: #ffffff;
-            border: 1px solid #555;
+            background: var(--plate-surface);
+            color: var(--text-main);
         }
         .btn-action:hover {
-            background: #3788d4;
-            color: #ffffff;
+            background: #1f1d19;
+            color: var(--gold-bright);
+            border-color: var(--gold-bright);
+            box-shadow: 0 0 12px var(--gold-glow);
         }
         .btn-delete {
-            background: #3a3a3a;
-            color: #ff6b6b;
-            border: 1px solid #632d2d;
+            background: var(--plate-surface);
+            color: #d96b6b;
+            border-color: rgba(140, 45, 45, 0.4);
         }
         .btn-delete:hover {
-            background: #ff3333;
-            color: #fff;
+            background: #8c2d2d;
+            color: #ffffff;
+            border-color: #d96b6b;
+            box-shadow: 0 0 12px rgba(217, 107, 107, 0.3);
         }
         .btn-reset {
             background: transparent;
-            color: #aaa;
-            border: 1px dashed #555;
+            color: var(--text-muted);
+            border: 1px dashed var(--border-muted);
             margin-top: 30px;
             width: 100%;
-            padding: 10px;
+            padding: 12px;
         }
         .btn-reset:hover {
-            border-color: #3788d4;
-            color: #3788d4;
+            border-color: var(--gold-accent);
+            color: var(--gold-bright);
+            box-shadow: 0 0 10px var(--gold-glow);
         }
-        .nav-badge {
-            color: #ff3333;
-            font-weight: bold;
-            margin-left: 2px;
-            animation: pulse 1.5s infinite alternate;
+        body::-webkit-scrollbar {
+            width: 12px;
+            background: var(--obsidian-bg);
         }
-        @keyframes pulse {
-            from { opacity: 0.6; }
-            to { opacity: 1; }
+        body::-webkit-scrollbar-thumb {
+            background: #23201c;
+            border: 1px solid var(--border-muted);
+            border-radius: 1px;
+        }
+        body::-webkit-scrollbar-thumb:hover {
+            background: var(--border-muted);
+            border-color: var(--gold-accent);
+        }
+        body::-webkit-scrollbar-track {
+            background: var(--obsidian-bg);
+        }
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #23201c var(--obsidian-bg);
         }
         @media (max-width: 1000px) {
             main, section {
-                max-width: 98vw;
-                padding-left: 2vw;
-                padding-right: 2vw;
+                max-width: 96vw;
+                padding-left: 3vw;
+                padding-right: 3vw;
             }
             .card {
-                padding-left: 4vw;
-                padding-right: 4vw;
+                padding: 18px 20px;
             }
         }
         @media (max-width: 600px) {
             main, section {
                 max-width: 100vw;
-                padding-left: 2vw;
-                padding-right: 2vw;
+                padding-left: 4vw;
+                padding-right: 4vw;
             }
             .card {
-                padding: 12px 10px;
-                font-size: 0.96em;
+                padding: 16px 14px;
+                font-size: 0.95em;
             }
             body {
                 font-size: 15px;
@@ -193,33 +280,6 @@
                 flex-direction: column;
                 gap: 4px;
             }
-        }
-        html, body {
-            max-width: 100vw;
-            overflow-x: hidden;
-        }
-        body::-webkit-scrollbar {
-            width: 14px;
-            background: #191919;
-        }
-        body::-webkit-scrollbar-thumb {
-            background: #d4af37;
-            border-radius: 7px;
-            border: 3px solid #191919;
-        }
-        body::-webkit-scrollbar-thumb:hover {
-            background: #b89a2b;
-        }
-        body::-webkit-scrollbar-track {
-            background: #191919;
-            border-radius: 8px;
-        }
-        html {
-            scrollbar-width: thin;
-            scrollbar-color: #d4af37 #191919;
-        }
-        *, *::before, *::after {
-            box-sizing: border-box;
         }
     </style>
     <script src="scripts/lock.js"></script>
@@ -230,7 +290,7 @@
     <main>
         <section id="mail-system">
             <h2>MESSAGES</h2>
-            <p style="color: #aaa; margin-bottom: 25px;">Stay up to date and get immediate alerts direct from Clan Leadership.</p>
+            <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 0.95em;">Stay up to date and get immediate alerts direct from Clan Leadership.</p>
             <div id="messages-list"></div>
             <button id="reset-btn" class="btn btn-reset" style="display: none;">Restore Deleted Messages</button>
         </section>
@@ -240,10 +300,10 @@
             {
                 id: "msg_001",
                 title: "First Time Here?",
-                description: `Welcome to the <b>Grinderouz Leaders Workspace!</b> The Best leaders workspace. Wether it's your first time being a Elder Or Coleader in Clash Of Clans, This Workspace is the only place for you. If its your first time here make sure you add this app to your homescreen by finding your browsers share button and pressing add to homescreen. This is where you'll manage all the Elder/Coleader applications and Strikes. <br>
-                Use the <a href="management.html">Management Dashboard</a> For Management. You can also view a online changelog of the workspace here: <a href="changelog.txt">View Online Changelog</a><br>
-                More Q&A's will be coming to the <a href="faq.html">PlayBook FAQ</a> selection soon<br>
-                One Last thing, The Restore Deleted messages button only restores the messages currently in the database. Older messages will not be restored if removed from the code.`,
+                description: `Welcome to the <b>Grinderouz Leaders Workspace!</b> The Best leaders workspace. Whether it's your first time being an Elder or Co-leader in Clash Of Clans, this Workspace is the only place for you. If it's your first time here, make sure you add this app to your home screen by finding your browser's share button and pressing add to home screen. This is where you'll manage all the Elder/Co-leader applications and Strikes. <br>
+                Use the <a href="management.html">Management Dashboard</a> For Management. You can also view an online changelog of the workspace here: <a href="changelog.txt">View Online Changelog</a><br>
+                More Q&A's will be coming to the <a href="faq.html">PlayBook FAQ</a> section soon.<br>
+                One last thing: The Restore Deleted Messages button only restores the messages currently in the database. Older messages will not be restored if removed from the code.`,
                 date: "July 2, 2026"
             },
             {
@@ -254,16 +314,16 @@ This new layout is built to be the stronger leaders workspace we need.
 <b>Removing useless clutter and adding new powerful features!</b>
 This is just the start.
 
-But before we go over the updates let's talk about what we sadly removed.
+But before we go over the updates, let's talk about what we sadly removed.
 
-<b>1. We removed Themes.</b> Their is no longer any in app themes as it makes updating the website code very complicated. <b>This will make updates faster and assure nothing is buggy.</b>
-2. We <b>removed the entire local profile system.</b> This ones a bummer because of the profile cards. But it does speed things up.
+<b>1. We removed Themes.</b> There are no longer any in-app themes as it makes updating the website code very complicated. <b>This will make updates faster and assure nothing is buggy.</b>
+2. We <b>removed the entire local profile system.</b> This one's a bummer because of the profile cards, but it does speed things up.
 
-If it really bothers you let me know in the discord and ill add it back in the future the same way it was removed.
+If it really bothers you, let me know in the Discord and I'll add it back in the future the same way it was removed.
 
-We've added some minor bug fixes, and lastly.
-Theirs a new mailbox system to keep you updated with everything happening!
-also check the playbook as it does get updated!`,
+We've added some minor bug fixes, and lastly:
+There's a new mailbox system to keep you updated with everything happening!
+Also check the PlayBook as it does get updated!`,
                 screenshot: "assets/banner.png",
                 date: "July 2, 2026"
             },
@@ -271,8 +331,8 @@ also check the playbook as it does get updated!`,
                 id: "msg_003",
                 title: "Online Subscriptions Launch!",
                 description: `We're excited to announce the launch of our new online subscription service! With a monthly fee, you'll get early access to new videos before they release, exclusive chat channels, Priority Speaker, Self Promote a 2nd Clan, & More!
-                <br>You can purchase your tier via our discord!
-                <br>The Official Trailer Hasnt released yet. But the features have!
+                <br>You can purchase your tier via our Discord!
+                <br>The Official Trailer hasn't released yet, but the features have!
                 <br><a href="https://discord.gg/jEN9NNdA4v">Purchase in Our Discord Ticket System</a>`,
                 screenshot: "assets/plans/online-banner.png",
                 date: "July 7, 2026"
@@ -280,13 +340,26 @@ also check the playbook as it does get updated!`,
             {
                 id: "msg_004",
                 title: "App Updates! V1.8.5",
-                description: `This update includes new scripts, Emojis, New Quick access features, Improvements, and More. Here is the full recap for this version:<br>
-                Online Subscribers Page shows if a Subscription has expired or not. SFX added to the Wheel Spinner, Redesigned Wheel Spinner Page, Website Section in Management changed to Online Subscribers, More Q&A's, More Quick Access features to Homepage, Emojis Script Added, Finally New Messages,
+                description: `This update includes new scripts, emojis, new quick access features, improvements, and more. Here is the full recap for this version:<br>
+                Online Subscribers Page shows if a Subscription has expired or not. SFX added to the Wheel Spinner, Redesigned Wheel Spinner Page, Website Section in Management changed to Online Subscribers, More Q&A's, More Quick Access features to Homepage, Emojis Script Added, and finally New Messages.
                 
                 Hope this update comes to be useful for you! Thank you for using the app!`,
                 screenshot: "assets/update-banner.png",
                 date: "July 8, 2026"
             },
+            {
+                id: "msg_005",
+                title: "App Updates! V1.9.6",
+                description: `Welcome to the New Overhaul of the App! This update includes Script Updates, Bug Fixes, New Features, Small Improvements, and more. Here is the full recap for this version:
+                
+                V1.9.6 July 13, 2026
+-----------------------------
+Navigation Menu Updated, App OverHaul, Small improvements to Messages System, 
+
+We hope you enjoy the new theme of this app! Thank you for being a Leader of Grinderouz!`,
+                screenshot: "assets/update-banner.png",
+                date: "July 13, 2026"
+            }
         ];
 
         let readMessages = JSON.parse(localStorage.getItem('glw_read_messages')) || [];
@@ -308,9 +381,9 @@ also check the playbook as it does get updated!`,
 
             if (activeMessages.length === 0) {
                 messagesList.innerHTML = `
-                    <div class="card" style="text-align: center; border-left-color: #555; padding: 40px 20px;">
-                        <h3 style="color: #aaa; margin: 0;">No Messages Found</h3>
-                        <p style="color: #666; margin: 8px 0 0 0;">Your messages are completely empty!</p>
+                    <div class="card" style="text-align: center; border-left-color: var(--border-muted); padding: 40px 20px;">
+                        <h3 style="color: var(--text-muted); margin: 0;">No Messages Found</h3>
+                        <p style="color: var(--text-muted); margin: 8px 0 0 0;">Your messages are completely empty!</p>
                     </div>`;
                 resetBtn.style.display = 'block';
                 return;
@@ -321,42 +394,132 @@ also check the playbook as it does get updated!`,
             activeMessages.forEach(msg => {
                 const isRead = readMessages.includes(msg.id);
 
-                const card = document.createElement('div');
-                card.className = `card${isRead ? ' read' : ''}`;
-                card.id = `card-${msg.id}`;
+                if (isRead) {
+                    const card = document.createElement('div');
+                    card.className = `card read collapsed`;
+                    card.id = `card-${msg.id}`;
 
-                let screenshotHTML = '';
-                if (msg.screenshot && msg.screenshot.trim() !== '') {
-                    screenshotHTML = `
-                        <div class="screenshot-container">
-                            <img class="screenshot-img" src="${msg.screenshot}" alt="Screenshot for ${msg.title}" />
-                        </div>`;
-                }
-
-                let safeDescription = msg.description.replace(/(\r\n|\n|\r)/g, "<br>");
-
-                card.innerHTML = `
-                    <div class="message-header">
-                        <div class="message-title-group">
-                            <h3 class="message-title">${msg.title}</h3>
-                            ${!isRead ? '<span class="unread-badge unread-indicator">New</span>' : ''}
+                    card.innerHTML = `
+                        <div class="message-header" style="border-bottom: none;margin-bottom:0;padding-bottom:0;">
+                            <div class="message-title-group" style="gap:8px;">
+                                <h3 class="message-title">${msg.title}</h3>
+                                <span class="message-date" style="font-size:0.80em;">${msg.date}</span>
+                                <span class="expand-arrow">&#9654;</span>
+                            </div>
                         </div>
-                        <span class="message-date">${msg.date}</span>
-                    </div>
-                    <div class="message-description">${safeDescription}</div>
-                    ${screenshotHTML}
-                    <div class="message-actions">
-                        <button class="btn btn-action" onclick="toggleRead('${msg.id}')">
-                            ${isRead ? 'Mark as Unread' : 'Mark as Read'}
-                        </button>
-                        <button class="btn btn-delete" onclick="deleteMessage('${msg.id}')">Delete</button>
-                    </div>
-                `;
-                messagesList.appendChild(card);
+                    `;
+
+                    card.addEventListener("click", function(e) {
+                        if(e.target.tagName && e.target.matches('button')) return;
+                        openMessage(msg.id);
+                    });
+
+                    messagesList.appendChild(card);
+                } else {
+                    const card = document.createElement('div');
+                    card.className = `card`;
+                    card.id = `card-${msg.id}`;
+
+                    let screenshotHTML = '';
+                    if (msg.screenshot && msg.screenshot.trim() !== '') {
+                        screenshotHTML = `
+                            <div class="screenshot-container">
+                                <img class="screenshot-img" src="${msg.screenshot}" alt="Screenshot for ${msg.title}" />
+                            </div>`;
+                    }
+
+                    let safeDescription = msg.description.replace(/(\r\n|\n|\r)/g, "<br>");
+
+                    card.innerHTML = `
+                        <div class="message-header">
+                            <div class="message-title-group">
+                                <h3 class="message-title">${msg.title}</h3>
+                                <span class="unread-badge unread-indicator">New</span>
+                            </div>
+                            <span class="message-date">${msg.date}</span>
+                        </div>
+                        <div class="message-description">${safeDescription}</div>
+                        ${screenshotHTML}
+                        <div class="message-actions">
+                            <button class="btn btn-action" onclick="toggleRead('${msg.id}')">
+                                Mark as Read
+                            </button>
+                            <button class="btn btn-delete" onclick="deleteMessage('${msg.id}')">Delete</button>
+                        </div>
+                    `;
+                    messagesList.appendChild(card);
+                }
             });
 
-            updateNavbarBadge();
+            if (window.updateNavbarBadge) updateNavbarBadge();
         }
+
+        function openMessage(msgId) {
+            const msg = MESSAGES_DATA.find(m => m.id === msgId);
+            if (!msg) return;
+
+            const oldCard = document.getElementById('card-' + msgId);
+            if (!oldCard) return;
+
+            const newCard = document.createElement('div');
+            newCard.className = `card read`;
+            newCard.id = `card-${msgId}`;
+
+            let screenshotHTML = '';
+            if (msg.screenshot && msg.screenshot.trim() !== '') {
+                screenshotHTML = `
+                    <div class="screenshot-container">
+                        <img class="screenshot-img" src="${msg.screenshot}" alt="Screenshot for ${msg.title}" />
+                    </div>`;
+            }
+
+            let safeDescription = msg.description.replace(/(\r\n|\n|\r)/g, "<br>");
+
+            newCard.innerHTML = `
+                <div class="message-header">
+                    <div class="message-title-group">
+                        <h3 class="message-title">${msg.title}</h3>
+                    </div>
+                    <span class="message-date">${msg.date}</span>
+                </div>
+                <div class="message-description">${safeDescription}</div>
+                ${screenshotHTML}
+                <div class="message-actions">
+                    <button class="btn btn-action" onclick="toggleRead('${msg.id}')">Mark as Unread</button>
+                    <button class="btn btn-delete" onclick="deleteMessage('${msg.id}')">Delete</button>
+                    <button class="btn btn-action" onclick="collapseMessage('${msg.id}')">Collapse</button>
+                </div>
+            `;
+
+            oldCard.replaceWith(newCard);
+        }
+
+        window.collapseMessage = function(msgId) {
+            const msg = MESSAGES_DATA.find(m => m.id === msgId);
+            if (!msg) return;
+
+            const oldCard = document.getElementById('card-' + msgId);
+            if (!oldCard) return;
+
+            const card = document.createElement('div');
+            card.className = `card read collapsed`;
+            card.id = `card-${msgId}`;
+            card.innerHTML = `
+                <div class="message-header" style="border-bottom: none;margin-bottom:0;padding-bottom:0;">
+                    <div class="message-title-group" style="gap:8px;">
+                        <h3 class="message-title">${msg.title}</h3>
+                        <span class="message-date" style="font-size:0.80em;">${msg.date}</span>
+                        <span class="expand-arrow">&#9654;</span>
+                    </div>
+                </div>
+            `;
+            card.addEventListener("click", function(e) {
+                if(e.target.tagName && e.target.matches('button')) return;
+                openMessage(msgId);
+            });
+
+            oldCard.replaceWith(card);
+        };
 
         window.toggleRead = function(id) {
             if (readMessages.includes(id)) {
@@ -366,7 +529,7 @@ also check the playbook as it does get updated!`,
             }
             localStorage.setItem('glw_read_messages', JSON.stringify(readMessages));
             renderMessages();
-            window.updateNavbarBadge?.();
+            if (window.updateNavbarBadge) window.updateNavbarBadge();
         };
 
         window.deleteMessage = function(id) {
@@ -374,7 +537,7 @@ also check the playbook as it does get updated!`,
                 deletedMessages.push(id);
                 localStorage.setItem('glw_deleted_messages', JSON.stringify(deletedMessages));
                 renderMessages();
-                window.updateNavbarBadge?.();
+                if (window.updateNavbarBadge) window.updateNavbarBadge();
             }
         };
 
@@ -384,7 +547,7 @@ also check the playbook as it does get updated!`,
             localStorage.removeItem('glw_deleted_messages');
             localStorage.removeItem('glw_read_messages');
             renderMessages();
-            window.updateNavbarBadge?.();
+            if (window.updateNavbarBadge) window.updateNavbarBadge();
         });
 
         window.addEventListener('DOMContentLoaded', () => {

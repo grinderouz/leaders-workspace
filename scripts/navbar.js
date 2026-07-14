@@ -24,13 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 <a href="index.html" class="nav-link">RULES & RANKS</a>
                 
                 <div class="nav-link dropdown" tabindex="0">
-                    ONLINE SUBSCRIBERS
+                    ONLINE
                     <svg class="dropdown-caret" width="20" height="20" viewBox="0 0 16 16" aria-hidden="true" focusable="false" style="margin-left:6px; vertical-align: middle;">
-                        <path d="M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z" fill="#aaa"/>
+                        <path d="M4.646 6.646a.5.5 0 0 1 .708 0L8 9.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z" fill="#8a8578"/>
                     </svg>
                     <div class="dropdown-menu">
-                        <a href="subscribers.html" class="dropdown-link">Active Subscriptions</a>
-                        <a href="sub-spinner.html" class="dropdown-link">Subscriber Wheel Spin</a>
+                        <a href="subscribers.html" class="dropdown-link">Subscriptions</a>
+                        <a href="sub-spinner.html" class="dropdown-link">Magic Wheel</a>
                     </div>
                 </div>
                 
@@ -40,6 +40,16 @@ document.addEventListener("DOMContentLoaded", () => {
             </nav>
         </header>
         <style>
+            :root {
+                --skyrim-obsidian: #080808;
+                --skyrim-iron: #121212;
+                --skyrim-plate: #1c1a17;
+                --skyrim-border: #383428;
+                --skyrim-gold: #c5a059;
+                --skyrim-gold-bright: #e6ca65;
+                --skyrim-silver: #c0c0c0;
+                --skyrim-text-muted: #8a8578;
+            }
             #navbar-container {
                 position: sticky;
                 top: 0;
@@ -48,10 +58,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 width: 100%;
             }
             .navbar-header {
-                background: #111111;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+                background: linear-gradient(180deg, #141414 0%, var(--skyrim-obsidian) 100%);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.85), 0 1px 0 rgba(197, 160, 89, 0.2);
                 padding: 15px 20px;
-                border-bottom: 1px solid #222;
+                border-bottom: 2px solid var(--skyrim-border);
                 display: flex;
                 flex-direction: column;
                 position: sticky;
@@ -89,11 +99,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             .navbar-title {
                 font-size: 1.2rem;
-                font-weight: 600;
-                letter-spacing: 0.5px;
+                font-weight: 700;
+                letter-spacing: 2.5px;
+                text-transform: uppercase;
                 vertical-align: middle;
-                color: #eeeeee;
-                font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+                color: var(--skyrim-silver);
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0px 1px #c5a059;
+                font-family: Georgia, 'Times New Roman', serif;
+                /* Skyrim-like look: use all-caps, more spacing, bold, high contrast serif, and shadow */
             }
             @media (max-width: 699px) {
                 .navbar-title,
@@ -122,25 +135,28 @@ document.addEventListener("DOMContentLoaded", () => {
             .hamburger span {
                 width: 100%;
                 height: 2px;
-                background-color: #dddddd;
-                border-radius: 2px;
+                background-color: var(--skyrim-gold);
+                border-radius: 0;
                 transition: all 0.3s ease;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
             }
             .hamburger.active span:nth-child(1) {
                 transform: translateY(9px) rotate(45deg);
+                background-color: var(--skyrim-gold-bright);
             }
             .hamburger.active span:nth-child(2) {
                 opacity: 0;
             }
             .hamburger.active span:nth-child(3) {
                 transform: translateY(-9px) rotate(-45deg);
+                background-color: var(--skyrim-gold-bright);
             }
             .navbar-links {
                 display: none;
                 flex-direction: column;
                 width: 100%;
                 margin-top: 15px;
-                gap: 8px;
+                gap: 6px;
             }
             .navbar-links.show {
                 display: flex;
@@ -148,25 +164,34 @@ document.addEventListener("DOMContentLoaded", () => {
             .nav-link {
                 text-decoration: none;
                 background: transparent;
-                color: #aaaaaa;
+                color: var(--skyrim-text-muted);
                 font-size: 0.95rem;
-                font-weight: 600;
-                font-family: 'Segoe UI', Roboto, sans-serif;
+                font-weight: 700;
+                font-family: Georgia, 'Times New Roman', serif;
+                letter-spacing: 2.5px;
+                text-transform: uppercase;
                 padding: 10px 16px;
-                border-radius: 6px;
+                border-radius: 1px;
                 text-align: center;
-                transition: all 0.2s ease;
+                transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
                 display: block;
-                letter-spacing: 0.5px;
                 border: 1px solid transparent;
                 position: relative;
                 cursor: pointer;
                 outline: none;
+                text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 0 2px #e6ca65;
             }
             .nav-link:hover, .nav-link:focus, .nav-link.active {
-                background: #1a1a1a;
-                color: #d4af37;
-                border: 1px solid #333;
+                background: linear-gradient(90deg, var(--skyrim-plate) 0%, var(--skyrim-iron) 100%);
+                color: var(--skyrim-gold-bright);
+                border: 1px solid var(--skyrim-border);
+                box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+                text-shadow: 0 0 10px #ffe580, 0 2px 7px rgba(230, 202, 101, 0.25);
+            }
+            .nav-link:hover .dropdown-caret path,
+            .nav-link:focus .dropdown-caret path,
+            .nav-link.active .dropdown-caret path {
+                fill: var(--skyrim-gold-bright);
             }
             .nav-badge {
                 display: inline-block;
@@ -177,7 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 height: 18px;
                 object-fit: contain;
             }
-
             .dropdown {
                 position: relative;
                 user-select: none;
@@ -193,18 +217,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 position: absolute;
                 left: 0;
                 top: calc(100% + 6px);
-                background: #222;
-                border-radius: 8px;
-                min-width: 200px;
-                box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+                background: var(--skyrim-obsidian);
+                border: 1px solid var(--skyrim-border);
+                border-radius: 1px;
+                min-width: 220px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.95), inset 0 0 15px rgba(0,0,0,0.8);
                 z-index: 40;
                 flex-direction: column;
                 gap: 2px;
                 opacity: 0;
                 pointer-events: none;
-                transform: translateY(-10px);
+                transform: translateY(-8px);
                 transition: opacity 0.22s cubic-bezier(.45,.05,.55,.95), 
                             transform 0.22s cubic-bezier(.45,.05,.55,.95);
+                padding: 4px;
             }
             .dropdown.open .dropdown-menu,
             .dropdown:focus-within .dropdown-menu {
@@ -215,20 +241,26 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             .dropdown-link {
                 background: transparent;
-                color: #aaaaaa;
-                padding: 10px 18px;
+                color: var(--skyrim-text-muted);
+                padding: 10px 16px;
                 text-align: left;
                 text-decoration: none;
-                font-size: 0.98rem;
-                font-weight: 500;
-                border: none;
-                border-radius: 6px;
-                transition: background 0.17s, color 0.17s;
+                font-size: 0.92rem;
+                font-weight: 700;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                border: 1px solid transparent;
+                border-radius: 1px;
+                transition: all 0.17s ease;
                 outline: none;
+                font-family: Georgia, 'Times New Roman', serif;
+                text-shadow: 0 1px 2px #c0c0c0;
             }
             .dropdown-link:hover, .dropdown-link:focus {
-                background: #191919;
-                color: #d4af37;
+                background: var(--skyrim-plate);
+                color: var(--skyrim-gold-bright);
+                border: 1px solid var(--skyrim-border);
+                text-shadow: 0 0 5px rgba(230, 202, 101, 0.3), 0 0 2px #e6ca65;
             }
             @media (max-width: 699px) {
                 .navbar-links {
@@ -237,13 +269,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 .dropdown-menu {
                     position: static;
                     min-width: 0;
-                    box-shadow: none;
-                    border-radius: 0 0 8px 8px;
+                    box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+                    border-radius: 0;
+                    border-left: 2px solid var(--skyrim-gold);
+                    border-right: none;
+                    border-top: none;
+                    border-bottom: none;
                     width: 100%;
-                    margin-top: 2px;
+                    margin-top: 4px;
+                    background: #0d0c0a;
                 }
                 .dropdown-link {
                     width: 100%;
+                    padding-left: 24px;
                 }
             }
             @media (min-width: 700px) {
@@ -267,7 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     display: inline-block;
                 }
                 .navbar-title {
-                    font-size: 1.4rem;
+                    font-size: 1.3rem;
                     display: inline-block;
                 }
                 .hamburger {
@@ -278,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     flex-direction: row;
                     margin-top: 0;
                     width: auto;
-                    gap: 10px;
+                    gap: 8px;
                 }
                 .nav-link {
                     display: inline-block;
@@ -288,7 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     left: 0;
                     right: auto;
                     top: calc(100% + 6px);
-                    min-width: 200px;
+                    min-width: 220px;
                 }
             }
         </style>
@@ -308,14 +346,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const dropdownMenu = dropdownEl?.querySelector('.dropdown-menu');
 
     if (dropdownEl && dropdownMenu) {
-        let dropdownHovered = false, dropdownHasFocus = false;
+        let dropdownHovered = false;
+        let dropdownHasFocus = false;
 
-        const openDropdown = () => {
-            dropdownEl.classList.add("open");
-        };
-        const closeDropdown = () => {
-            dropdownEl.classList.remove("open");
-        };
+        const openDropdown = () => dropdownEl.classList.add("open");
+        const closeDropdown = () => dropdownEl.classList.remove("open");
 
         dropdownEl.addEventListener('mouseenter', () => {
             dropdownHovered = true;
@@ -349,9 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         document.addEventListener('click', (e) => {
-            if (!dropdownEl.contains(e.target)) {
-                closeDropdown();
-            }
+            if (!dropdownEl.contains(e.target)) closeDropdown();
         });
     }
 

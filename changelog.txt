@@ -1,3 +1,7 @@
+V1.9.6 July 13, 2026
+-----------------------------
+Navigation Menu Updated, App OverHaul, Small improvements to Messages System, 
+
 V1.8.5 July 8, 2026
 -----------------------------
 Online Subscribers Page shows if a Subscription has expired or not. SFX added to the Wheel Spinner, 

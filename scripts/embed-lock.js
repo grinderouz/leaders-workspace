@@ -1,132 +1,43 @@
 const EmbedLock = (() => {
     const LOCK_STYLES = `
         .embed-lock-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: #111;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            justify-content: center;
-            transition: opacity 0.15s;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #0a0a0a; z-index: 9999;
+            display: flex; flex-direction: column; align-items: stretch; justify-content: center;
         }
         .embed-lock-fullscreen-content {
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 100vw;
-            height: 100vh;
+            flex: 1 1 auto; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
         .embed-lock-title {
-            color: #fff;
-            font-size: 2.1em;
-            font-weight: bold;
-            margin-bottom: 38px;
-            letter-spacing: 0.04em;
-            text-align: center;
-        }
-        .embed-lock-form-row {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 13px;
-            margin-bottom: 26px;
+            color: #f3e5ab; font-size: 1.8em; font-weight: bold; margin-bottom: 30px;
+            letter-spacing: 3px; text-transform: uppercase; text-align: center;
+            font-family: 'Segoe UI', 'Trebuchet MS', Trajan, Georgia, serif;
         }
         .embed-lock-input {
-            padding: 11px 20px;
-            font-size: 1.18em;
-            border-radius: 5px;
-            border: none;
-            background: none;
-            color: #f8eec1;
-            outline: none;
-            margin-bottom: 0;
-            width: 260px;
-            max-width: 80vw;
-            text-align: center;
+            padding: 12px; font-size: 1.2em; border-radius: 2px;
+            border: 1px solid #383428; background: #0a0a0a;
+            color: #f3e5ab; outline: none; width: 260px; text-align: center;
         }
-        .embed-lock-err {
-            color: #cb4040;
-            font-size: 1.01em;
-            min-height: 23px;
-            margin-bottom: 6px;
-            margin-top: 2px;
-            text-align: center;
-            font-weight: 500;
-        }
-        .embed-lock-btn-row {
-            margin-top: 16px;
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+        .embed-lock-input:focus { border-color: #c5a059; }
+        .embed-lock-err { color: #d96b6b; font-size: 0.9em; min-height: 20px; margin-top: 10px; }
         .embed-lock-btn, .embed-lock-cancel-btn {
-            font-size: 1.03em;
-            font-weight: bold;
-            border-radius: 6px;
-            border: none;
-            padding: 10px 28px;
-            cursor: pointer;
-            box-shadow: 0 2.5px 14px #0004, 0 1px 2px #0002;
-            transition: background 0.18s, color 0.1s;
+            font-size: 0.95em; font-weight: 600; border-radius: 2px; border: 1px solid #383428;
+            padding: 10px 24px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            transition: all 0.2s;
         }
-        .embed-lock-btn {
-            background:rgb(255, 255, 255);
-            color: #232323;
-        }
-        .embed-lock-btn:active {
-            background:rgb(0, 0, 0);
-            color:white;
-        }
-        .embed-lock-cancel-btn {
-            background: #2f2f2f;
-            color: #aaa;
-            border: 1px solid #444;
-        }
-        .embed-lock-cancel-btn:active {
-            background: #191919;
-            color: #ccc;
-        }
+        .embed-lock-btn { background: #c5a059; color: #0a0a0a; }
+        .embed-lock-btn:hover { background: #f3e5ab; border-color: #f3e5ab; }
+        .embed-lock-cancel-btn { background: #141311; color: #9e9a8f; }
         .embed-lock-view-btn {
-            display: block;
-            margin: 2.5em auto 1.2em auto;
-            background:rgb(73, 73, 73);
-            color:rgb(255, 255, 255);
-            font-size: 1em;
-            border: none;
-            border-radius: 6px;
-            padding: 12px 34px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.18s;
-            box-shadow: 0 2.5px 14px #0004, 0 1px 2px #0005;
-            text-align: center;
+            display: block; margin: 2em auto; background: #141311; color: #f3e5ab;
+            border: 1px solid #383428; border-radius: 2px; padding: 12px 30px;
+            font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
         }
-        .embed-lock-view-btn:active {
-            background:rgb(255, 255, 255);
-            color:black;
-        }
-        @media (max-width: 520px) {
-            .embed-lock-title {
-                font-size: 1.22em;
-                margin-bottom: 21px;
-            }
-            .embed-lock-input {
-                width: 98vw;
-                max-width: 97vw;
-            }
-        }
+        .embed-lock-view-btn:hover { border-color: #c5a059; box-shadow: 0 0 10px rgba(197,160,89,0.3); }
     `;
     let stylesAppended = false;
     let pinUnlocked = false;
-    let lockedContainers = [];
+    const lockedContainers = [];
     let viewLockedBtn = null;
     let unlockPin = null;
 
@@ -251,7 +162,7 @@ const EmbedLock = (() => {
     }
 
     function revealLockedEmbeds() {
-        lockedContainers.forEach(c => showEmbeds(c));
+        lockedContainers.forEach(showEmbeds);
         lockedContainers.length = 0;
     }
 
